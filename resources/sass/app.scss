@@ -1,0 +1,17 @@
+@import "../sass/Components/Navbar.scss";
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7fafc;
+    margin: 0;
+    padding: 0;
+}
+
+.app {
+    flex: 1;
+    overflow: auto;
+    margin: 30px;
+    display: flex;
+    flex-direction: row;
+    
+}
