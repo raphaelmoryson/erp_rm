@@ -10,12 +10,10 @@
 <body>
     <div>
         <div class="sidebar">
-            <div class="logo">ERP System</div>
+            <div class="logo">ImmoFlow</div>
             <nav>
-                <a href="{{ url('/') }}" class="{{ Request::is('/') ? 'active' : '' }}">Dashboard</a>
+                <a href="{{ url('/') }}" class="{{ Request::is('/') ? 'active' : '' }}">Accueil</a>
                 <a href="{{ url('/properties') }}" class="{{ Request::is('properties') ? 'active' : '' }}">Immeuble</a>
-                <a href="{{ url('/projects') }}" class="{{ Request::is('projects') ? 'active' : '' }}">Projets</a>
-                <a href="{{ url('/settings') }}" class="{{ Request::is('settings') ? 'active' : '' }}">Paramètres</a>
             </nav>
         </div>
     </div>

@@ -1,5 +1,5 @@
 @import "../sass/Components/Navbar.scss";
-
+@import "../sass/Page/Properties.scss";
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f7fafc;
@@ -12,6 +12,7 @@ body {
     overflow: auto;
     margin: 30px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     
 }
+

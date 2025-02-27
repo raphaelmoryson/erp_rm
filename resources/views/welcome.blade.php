@@ -1,20 +1,7 @@
-<!DOCTYPE html>
-<html lang="fr">
+@extends('layouts.app')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Laravel</title>
-</head>
+@section('title', 'Welcome')
 
-<body>
-    @extends('layouts.app')
+@section('content')
 
-    @section('title', 'Welcome')
-
-    @section('content')
-
-    @endsection
-</body>
-
-</html>
+@endsection
