@@ -1,10 +1,19 @@
 @extends('layouts.app')
 
 @section('title', 'Liste des immeubles')
+@section('link', 'properties/create')
 
 @section('content')
     <div class="properties-container">
-        <div class="properties-grid">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="input-group">
+                <input type="search" class="form-control rounded" placeholder="Chercher un appartement" aria-label="Search"
+                    aria-describedby="search-addon" />
+                <button type="button" class="btn bg-primary text-light" data-mdb-rippe-init>Rechercher</button>
+            </div>
+        </div>
+        <div class="properties-grid mt-3">
             @foreach($properties as $property)
                 <div class="property-card">
                     <div class="property-icon">
@@ -19,7 +28,8 @@
                     <div class="property-info">
                         <h2 class="property-name">{{ $property['name'] }}</h2>
                         <p class="property-address">{{ $property['address'] }}, {{ $property['zip_code'] }}
-                            {{ $property['city'] }}</p>
+                            {{ $property['city'] }}
+                        </p>
                         <a href="properties/{{ $property['id'] }}" class="btn-details">Voir Détails</a>
                     </div>
                 </div>

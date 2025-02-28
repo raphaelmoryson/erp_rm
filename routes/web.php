@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PropertiesController;
 use App\Models\Property;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -9,10 +10,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [IndexController::class, 'index']);
 
-    Route::get('/properties', function() {
-        $properties = Property::all();
-        return view('Page.properties', ['properties' => $properties]);
-    });
+    Route::get('/properties', [PropertiesController::class,'index'])->name('properties');
+    Route::get('/properties/create', [PropertiesController::class,'create'])->name('properties.create');
 });
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');

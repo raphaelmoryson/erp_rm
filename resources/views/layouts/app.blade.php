@@ -15,7 +15,12 @@
 <body style="display: flex; flex-direction: row; height: 100vh; margin: 0;">
     @include('Components.Navbar')
     <div class="app">
-        <h1>@yield('title', 'Document')</h1>
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>@yield('title', 'Document')</h1>
+            @hasSection('link')
+                <a href="@yield('link', '/')" class="btn btn-primary bg-primary">Ajouter</a>
+            @endif
+        </div>
         @yield('content')
     </div>
 </body>
