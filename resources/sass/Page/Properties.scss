@@ -1,75 +1,95 @@
+@import "./Properties-edit.scss";
 .properties-container {
+    width: 100%;
+}
+.properties-container .title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+}
 
-    .title {
-        text-align: center;
-        font-size: 2rem;
-        font-weight: 600;
-        margin-bottom: 20px;
-        color: #333;
+.properties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.property-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    text-align: center;
+    padding: 20px;
+
+    &:hover {
+        transform: scale(1.05);
     }
 
-    .properties-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-    }
+    /* Icône de la propriété */
+    .property-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f4f4f4;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        margin: auto;
+        margin-bottom: 15px;
 
-    .property-card {
-        background: #fff;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease-in-out;
-        text-align: center;
-        padding: 20px;
-
-        .property-icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f4f4f4;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            margin: auto;
-            margin-bottom: 15px;
-
-            svg {
-                width: 40px;
-                height: 40px;
-                fill: #3498db;
-            }
-        }
-
-        .property-info {
-            .property-name {
-                font-size: 1.4rem;
-                font-weight: 600;
-                color: #444;
-            }
-
-            .property-address {
-                font-size: 1rem;
-                color: #777;
-                margin: 5px 0;
-            }
-
-            .btn-details {
-                display: inline-block;
-                margin-top: 10px;
-                padding: 8px 15px;
-                font-size: 0.9rem;
-                font-weight: bold;
-                text-decoration: none;
-                color: white;
-                background: #3498db;
-                border-radius: 5px;
-                transition: background 0.3s;
-
-                &:hover {
-                    background: #2980b9;
-                }
-            }
+        svg {
+            width: 40px;
+            height: 40px;
+            fill: #3498db;
         }
     }
+
+    /* Infos de la propriété */
+    .property-info {
+        .property-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .property-address {
+            font-size: 1rem;
+            color: #777;
+            margin: 5px 0;
+        }
+
+        .btn-details {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            background: #3498db;
+            border-radius: 5px;
+            transition: background 0.3s;
+
+            /* Effet au survol */
+            &:hover {
+                background: #2980b9;
+            }
+        }
+    }
+}
+.map-container {
+    padding: 10px;
+    border-radius: 12px;
+    width: 100%; 
+    position: relative; 
+}
+
+#map {
+    height: calc(75vh); 
+    width: 550px; 
+    border-radius: 12px;
 }

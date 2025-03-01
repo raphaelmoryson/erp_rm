@@ -11,6 +11,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [IndexController::class, 'index']);
 
     Route::get('/properties', [PropertiesController::class,'index'])->name('properties');
+    Route::get('/properties/{id}', [PropertiesController::class,'show'])->name('properties.show');
     Route::get('/properties/create', [PropertiesController::class,'create'])->name('properties.create');
 });
 

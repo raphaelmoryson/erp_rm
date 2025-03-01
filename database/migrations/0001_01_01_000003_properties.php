@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('city');
             $table->string('zip_code', 10);
             $table->enum('status', ['actif', 'inactif'])->default('actif');
+            $table->enum('type', ['entreprise', 'locatif','propriétaire'])->default('locatif');
             $table->timestamps();
         });
     }

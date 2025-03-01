@@ -11,7 +11,9 @@ class Unit extends Model
 
     protected $fillable = [
         'property_id',
+        'tenant_id',
         'type',
+        'name',
         'surface',
         'status',
     ];
@@ -19,5 +21,9 @@ class Unit extends Model
     public function property()
     {
         return $this->belongsTo(Property::class);
+    }
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class, 'tenant_id');
     }
 }

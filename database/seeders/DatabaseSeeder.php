@@ -8,6 +8,7 @@ use App\Models\LegalDocument;
 use App\Models\Maintenance;
 use App\Models\Payment;
 use App\Models\Property;
+use App\Models\Tenant;
 use App\Models\Unit;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -57,20 +58,58 @@ class DatabaseSeeder extends Seeder
         $property = Property::create([
             'owner_id' => $owner->id,
             'regie_id' => $regie->id,
-            'name' => 'Immeuble Genève Centre',
-            'address' => '10 Rue de la Paix',
+            'name' => 'Immeuble Quai du Mont-Blanc',
+            'address' => '15 Quai du Mont-Blanc',
             'city' => 'Genève',
             'zip_code' => '1201',
             'status' => 'actif',
+            'type' => 'proprietaire',
         ]);
 
+        // Créer un immeuble
+        $property3 = Property::create([
+            'owner_id' => $owner->id,
+            'regie_id' => $regie->id,
+            'name' => 'Immeuble Genève Centre',
+            'address' => '33, Chemin Armand Dufaux',
+            'city' => 'Genève',
+            'zip_code' => '1246',
+            'status' => 'actif',
+            'type' => 'entreprise', // Exemple de type
+        ]);
+
+
+        // Créer un immeuble
+        $property2 = Property::create([
+            'owner_id' => $owner->id,
+            'regie_id' => $regie->id,
+            'name' => 'Résidence Cornavin',
+            'address' => '23 Rue de Cornavin',
+            'city' => 'Genève',
+            'zip_code' => '1201',
+            'status' => 'actif',
+            'type' => 'locatif',
+        ]);
+
+        $tenant = Tenant::create([
+            'lastName'=> 'Krabi ',
+            'firstName'=> 'Mohamed',
+            'email' => 'raphael.moryson@gmail.com',
+            'mobile' => '0767366627',
+            'adress' => '',
+            'status' => 'actif',
+        ]);
+            
         // Créer un lot (appartement) dans l’immeuble
         $unit = Unit::create([
             'property_id' => $property->id,
+            'tenant_id' => $tenant->id,
+            'name' => 'Appartement citadelle',
             'type' => 'appartement',
             'surface' => 75.5,
             'status' => 'loué',
         ]);
+ 
 
         // Créer un contrat de location
         $lease = Lease::create([

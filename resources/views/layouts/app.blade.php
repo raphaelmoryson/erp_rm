@@ -6,10 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-    <link href="{{ mix('scss/app.scss') }}" rel="stylesheet">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+    <style>
+        body {
+            visibility: hidden;
+        }
+    </style>
+    <!-- CDN pour Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 
 <body style="display: flex; flex-direction: row; height: 100vh; margin: 0;">
@@ -23,6 +29,12 @@
         </div>
         @yield('content')
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.body.style.visibility = 'visible';
+        });
+    </script>
+
 </body>
 
 </html>
