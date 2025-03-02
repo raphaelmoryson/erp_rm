@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->enum('type', ['appartement', 'bureau', 'commerce']);
             $table->float('surface');
             $table->enum('status', ['libre', 'loué', 'en travaux'])->default('libre');
+            $table->string('floor');
             $table->string('name');
             $table->timestamps();
         });

@@ -11,11 +11,13 @@ class Property extends Model
 
     protected $fillable = [
         'owner_id',
-        'regie_id',
+        'manager_id',
         'name',
         'address',
         'city',
         'zip_code',
+        'latitude',
+        'longitude',
         'status',
     ];
 
@@ -24,8 +26,8 @@ class Property extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function regie()
+    public function manager()
     {
-        return $this->belongsTo(User::class, 'regie_id');
+        return $this->belongsTo(User::class, 'manager_id');
     }
 }

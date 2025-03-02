@@ -9,10 +9,11 @@ return new class extends Migration {
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade'); // Propriétaire
-            $table->foreignId('regie_id')->constrained('users')->onDelete('cascade'); // Régie
+            $table->foreignId('manager_id')->constrained('users')->onDelete('cascade'); // Propriétaire
             $table->string('name');
             $table->string('address');
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->string('city');
             $table->string('zip_code', 10);
             $table->enum('status', ['actif', 'inactif'])->default('actif');

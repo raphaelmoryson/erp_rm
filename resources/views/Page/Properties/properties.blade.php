@@ -6,7 +6,6 @@
 @section('content')
     <div class="container m-0">
         <div class="row">
-            <!-- Colonne 1 - Liste des Immeubles -->
             <div class="col-md-8">
                 <div class="properties-container">
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -33,7 +32,7 @@
                                     <p class="property-address">{{ $property['address'] }}, {{ $property['zip_code'] }}
                                         {{ $property['city'] }}
                                     </p>
-                                    <a href="properties/{{ $property['id'] }}" class="btn-details">Voir Détails</a>
+                                    <a href="properties/edit/{{ $property['id'] }}" class="btn-details">Voir Détails</a>
                                 </div>
                             </div>
                         @endforeach
@@ -42,44 +41,23 @@
             </div>
 
             <!-- Colonne 2 - Carte interactive -->
-            <div class="col-md-4">
-                <div class="map-container w-100">
+            <div class="col-md-2">
+                <div class="map-container ">
                     <h3>Emplacement</h3>
                     <div id="map"></div>
                 </div>
             </div>
         </div>
     </div>
-    @foreach($properties as $property)
-        @if($property->latitude && $property->longitude)
-            L.marker([{{ $property->latitude }}, {{ $property->longitude }}])
-            .addTo(map)
-            .bindPopup("<b>{{ $property->name }}</b><br>{{ $property->address }}<br>{{ $property->zip_code }}
-            {{ $property->city }}");
-        @endif
-    @endforeach
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var map = L.map('map').setView([46.18904335573905, 6.075419262357862], 11);
+            var map = L.map('map').setView([46.20813364904721, 6.155216646162519], 9);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            function geocodeAddress(address, callback) {
-                var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address);
-
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && data.length > 0) {
-                            var lat = data[0].lat;
-                            var lon = data[0].lon;
-                            callback(lat, lon);
-                        }
-                    })
-                    .catch(error => console.error('Erreur de géocodage:', error));
-            }
 
             // Définir des icônes personnalisées
             var redIcon = L.icon({
@@ -104,26 +82,24 @@
             });
 
             @foreach($properties as $property)
-                var address = "{{ $property->address }}, {{ $property->zip_code }} {{ $property->city }}";
-                geocodeAddress(address, function (lat, lon) {
-                    var icon;
-                    console.log(type)
-                    
-                    var type = "{{ $property->type }}"; // Assurez-vous que le type est bien défini dans votre modèle
-                    if (type === "entreprise") {
-                        icon = redIcon;
-                    } else if (type === "locatif") {
-                        icon = blueIcon;
-                    } else if (type === "propriétaire") {
-                        icon = greenIcon;
-                    } else {
-                        icon = L.marker(); // Par défaut, un marqueur normal
-                    }
+                var icon;
+                var latitude = "{{ $property->latitude }}";
+                var longitude = "{{ $property->longitude }}";
+                console.log(latitude, longitude)
+                var type = "{{ $property->type }}";
+                if (type === "entreprise") {
+                    icon = redIcon;
+                } else if (type === "locatif") {
+                    icon = blueIcon;
+                } else if (type === "propriétaire") {
+                    icon = greenIcon;
+                } else {
+                    icon = L.marker();
+                }
 
-                    L.marker([lat, lon], { icon: icon })
-                        .addTo(map)
-                        .bindPopup("<b>{{ $property->name }}</b><br>{{ $property->address }}");
-                });
+                L.marker([latitude, longitude], { icon: icon })
+                    .addTo(map)
+                    .bindPopup("<b>{{ $property->name }}</b><br>{{ $property->address }}");
             @endforeach
         });
 

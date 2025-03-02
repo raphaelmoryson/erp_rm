@@ -11,8 +11,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [IndexController::class, 'index']);
 
     Route::get('/properties', [PropertiesController::class,'index'])->name('properties');
-    Route::get('/properties/{id}', [PropertiesController::class,'show'])->name('properties.show');
+    Route::get('/properties/edit/{id}', [PropertiesController::class,'show'])->name('properties.show');
     Route::get('/properties/create', [PropertiesController::class,'create'])->name('properties.create');
+    Route::post('/properties/create', [PropertiesController::class,'create_post'])->name('properties.create_post');
 });
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');

@@ -1,6 +1,9 @@
 @import "./Properties-edit.scss";
 .properties-container {
-    width: 100%;
+    max-height: 80vh; /* Adjust the height as needed */
+    overflow-y: auto;
+    overflow-x: hidden; /* Prevents horizontal scrolling */
+    padding-right: 10px; /* Prevents content from being hidden behind scrollbar */
 }
 .properties-container .title {
     text-align: center;
@@ -25,9 +28,6 @@
     text-align: center;
     padding: 20px;
 
-    &:hover {
-        transform: scale(1.05);
-    }
 
     /* Icône de la propriété */
     .property-icon {
@@ -90,6 +90,6 @@
 
 #map {
     height: calc(75vh); 
-    width: 550px; 
+    width: 450px; 
     border-radius: 12px;
 }
