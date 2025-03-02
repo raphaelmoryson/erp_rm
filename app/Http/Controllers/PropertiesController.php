@@ -47,7 +47,6 @@ class PropertiesController extends Controller
             $long = $longitude;
             $lat = $latitude;
 
-            // Enregistrer la propriété avec les coordonnées
             $properties = Property::create([
                 'manager_id' => $request->manager,
                 'name' => $request->name,
@@ -67,8 +66,9 @@ class PropertiesController extends Controller
 
     public function show($id)
     {
-        $building = Property::find($id);
+        $building = Property::find($id)->with('manager')->first();
         $units = Unit::where('property_id', $building->id)->with('tenant')->get();
+        // return $building;
         return view('page.properties.edit-properties', ['units' => $units, 'building' => $building]);
     }
 

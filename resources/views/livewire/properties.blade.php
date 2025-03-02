@@ -18,11 +18,23 @@
     <div>
         @if ($currentTab === 'info')
             <div class="container mt-4">
-                <div class="card">
-                    <div class="card-body">
-                        <p><strong>Nom :</strong> <span class="text-muted">{{ $building->name }}</span></p>
-                        <p><strong>Adresse :</strong> <span class="text-muted">{{ $building->address }}</span></p>
-                        <p><strong>Ville :</strong> <span class="text-muted">{{ $building->city }}</span></p>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <p><strong>Nom :</strong> <span class="text-muted">{{ $building->name }}</span></p>
+                                <p><strong>Adresse :</strong> <span class="text-muted">{{ $building->address }}</span></p>
+                                <p><strong>Ville :</strong> <span class="text-muted">{{ $building->city }}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body d-flex flex-column">
+                                <p><strong>Gérent technique :</strong> <span class="text-muted">{{ $building->manager->name }}</span></p>
+                                <p><strong>Email gérent :</strong> <span class="text-muted">{{ $building->manager->email }}</span></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
