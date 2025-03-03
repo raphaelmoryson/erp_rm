@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
             $table->string('city');
+            $table->bigInteger('max_units');
             $table->string('zip_code', 10);
             $table->enum('status', ['actif', 'inactif'])->default('actif');
             $table->enum('type', ['entreprise', 'locatif','propriétaire'])->default('locatif');

@@ -44,7 +44,7 @@
         svg {
             width: 40px;
             height: 40px;
-            fill: #3498db;
+            fill: #093B69;
         }
     }
 
@@ -70,14 +70,10 @@
             font-weight: bold;
             text-decoration: none;
             color: white;
-            background: #3498db;
+            background: #093B69;
             border-radius: 5px;
             transition: background 0.3s;
 
-            /* Effet au survol */
-            &:hover {
-                background: #2980b9;
-            }
         }
     }
 }

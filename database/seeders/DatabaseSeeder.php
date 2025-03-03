@@ -63,6 +63,7 @@ class DatabaseSeeder extends Seeder
             'longitude' =>  6.199683967732264,
             'city' => 'Genève',
             'zip_code' => '1201',
+            'max_units' => 5,
             'status' => 'actif',
             'type' => 'proprietaire',
         ]);
@@ -84,7 +85,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Appartement citadelle',
             'type' => 'appartement',
             'floor' => 'étage 1',   
-            'surface' => 75.5,
+            'area' => 75.5,
             'status' => 'loué',
         ]);
  

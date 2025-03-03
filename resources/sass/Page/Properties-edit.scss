@@ -1,3 +1,4 @@
+
 .units {
     display: flex;
     justify-content: center;
@@ -10,7 +11,9 @@
     &:hover {
         color: blue;
     }
-    .units-icon {
-        width: 50px;
-    }   
+
+}
+
+.units-icon {
+    width: 50px;
 }

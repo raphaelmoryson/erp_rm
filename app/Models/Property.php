@@ -17,6 +17,7 @@ class Property extends Model
         'city',
         'zip_code',
         'latitude',
+        'max_units',
         'longitude',
         'status',
     ];

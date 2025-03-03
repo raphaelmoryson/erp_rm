@@ -14,8 +14,9 @@ class Unit extends Model
         'tenant_id',
         'type',
         'name',
-        'surface',
+        'area',
         'status',
+        'floor',
     ];
 
     public function property()

@@ -14,7 +14,7 @@
             <label for="manager">Gérant de l'immeuble</label>
             <select class="form-select" aria-label="Default select example" name="manager" id="manager">
                 @foreach ($managers as $manager)
-                    <option value="{{ $manager->id }}" >
+                    <option value="{{ $manager->id }}">
                         {{ $manager->name }}
                     </option>
                 @endforeach
@@ -23,16 +23,16 @@
         <div class="form-group">
             <label for="type">Type :</label>
             <select class="form-select" aria-label="Default select example" name="type" id="type">
-                    <option value="entreprise" >Entreprise</option>
-                    <option value="locatif" >Locatif</option>
-                    <option value="propriétaire" >Propriétaire</option>
+                <option value="entreprise">Entreprise</option>
+                <option value="locatif">Locatif</option>
+                <option value="propriétaire">Propriétaire</option>
             </select>
         </div>
         <div class="form-group">
             <label for="status">Statuts :</label>
             <select class="form-select" aria-label="Default select example" name="status" id="status">
-                    <option value="actif" >Actif</option>
-                    <option value="inactif" >Inactif</option>
+                <option value="actif">Actif</option>
+                <option value="inactif">Inactif</option>
             </select>
         </div>
         <div class="form-group">
@@ -48,6 +48,11 @@
             <input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Entrez le code postal"
                 required>
         </div>
-        <button type="submit" class="btn btn-primary">Créer</button>
+        <div class="form-group">
+            <label for="max_units">Appartement max</label>
+            <input type="number" class="form-control" id="max_units" name="max_units" placeholder="Entrez le nombre d'appartement dans l'immeuble"
+                required>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Créer</button>
     </form>
 @endsection
