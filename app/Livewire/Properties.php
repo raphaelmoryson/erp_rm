@@ -1,8 +1,9 @@
 <?php
 namespace App\Livewire;
 
+use App\Models\TechnicalFolder;
 use Livewire\Component;
-use App\Models\Unit; // Assure-toi d'importer le modèle Unit
+use App\Models\Unit;
 
 class Properties extends Component
 {
@@ -11,10 +12,13 @@ class Properties extends Component
     public $units = [];
     public $building = [];
 
-    public function mount($building, $occupancyRate)
+    public $technicalFolders = [];
+
+    public function mount($building, $occupancyRate, $technicalFolders)
     {
         $this->building = $building;
         $this->occupancyRate = $occupancyRate;
+        $this->technicalFolders = $technicalFolders;
     }
 
     public function setTab($tab)
@@ -28,7 +32,7 @@ class Properties extends Component
 
     public function render()
     {
-        $data = ['building' => $this->building, 'occupancyRate'=> $this->occupancyRate];
+        $data = ['building' => $this->building, 'occupancyRate'=> $this->occupancyRate, 'technicalFolders' => $this->technicalFolders];
 
         if ($this->currentTab === 'lots') {
             $data['units'] = $this->building;

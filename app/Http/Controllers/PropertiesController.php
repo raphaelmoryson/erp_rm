@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Property;
+use App\Models\TechnicalFolder;
 use App\Models\Tenant;
 use App\Models\Unit;
 use App\Models\User;
@@ -70,8 +71,9 @@ class PropertiesController extends Controller
         $building = Property::where("id", $id)->first();
         $units = Unit::where('property_id', $id)->with('tenant')->get();
         $occupancyRate = (count($units) / $building->max_units) * 100;
-        // return $building;
-        return view('page.properties.edit-properties', ['units' => $units, 'building' => $building, 'occupancyRate' => $occupancyRate]);
+        $technicalFolders = TechnicalFolder::where('property_id',  $id)->with('files')->get();
+        // return $technicalFolders;
+        return view('page.properties.edit-properties', ['units' => $units, 'building' => $building, 'occupancyRate' => $occupancyRate, 'technicalFolders' => $technicalFolders]);
     }
     public function tenants_add($id)
     {

@@ -28,12 +28,12 @@
                     Immeuble
                 </a>
 
-                <a href="{{ url('/users') }}" class="{{ Request::is('users') ? 'active' : '' }}">
+                <a href="{{ url('/tenants') }}" class="{{ Request::is('tenants') ? 'active' : '' }}">
                     <x-heroicon-o-user-group class="icon-navbar" />
-                    Utilisateurs
+                    Locataire
                 </a>
 
-                <a href="{{ url('/transactions') }}" class="{{ Request::is('transactions') ? 'active' : '' }}">
+                {{-- <a href="{{ url('/transactions') }}" class="{{ Request::is('transactions') ? 'active' : '' }}">
                     <x-heroicon-o-currency-dollar class="icon-navbar" />
                     Transactions
                 </a>
@@ -41,7 +41,7 @@
                 <a href="{{ url('/settings') }}" class="{{ Request::is('settings') ? 'active' : '' }}">
                     <x-heroicon-o-cog class="icon-navbar" />
                     Paramètres
-                </a>
+                </a> --}}
             </nav>
 
             <div class="bottom-navbar">

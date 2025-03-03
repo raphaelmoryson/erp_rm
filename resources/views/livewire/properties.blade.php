@@ -7,21 +7,21 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ $currentTab === 'lots' ? 'active' : '' }}" wire:click="setTab('lots')"
-                style="cursor: pointer">
-                Liste des appartements
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link {{ $currentTab === 'compta' ? 'active' : '' }}" wire:click="setTab('compta')"
                 style="cursor: pointer">
                 Aspect comptable
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link {{ $currentTab === 'tech' ? 'active' : '' }}" wire:click="setTab('tech')"
+                style="cursor: pointer">
+                Aspect technique
+            </a>
+        </li>
     </ul>
     <div wire:loading.remove>
         @if ($currentTab === 'info')
-            <div class=".container-fluid p-0 m-0">
+            <div class=".container-fluid p-0 m-0" style="overflow-x: hidden">
                 <div class="row">
                     <div class="col-md-8">
                         <div class="card">
@@ -54,82 +54,135 @@
                     <div class="col-md-3 mt-3">
                         <div class="card p-3 bg-primary text-light text-center">
                             <p class="fs-5">Taux d'occupation</p>
-                            <p class="fs-1">{{ number_format($occupancyRate, 2) }}%</p> 
+                            <p class="fs-1">{{ number_format($occupancyRate, 2) }}%</p>
                         </div>
                     </div>
-                    
-{{--                     
+                    <div class="row mt-3">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p>Liste des appartements</p>
+                                        <a href="{{route('properties.tenants_add', $building->id)}}">
+                                            <button class="btn btn-primary">Ajouter</button>
+                                        </a>
+                                    </div>
+                                    <div style="height: 500px;overflow-y:scroll">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Nom de l'appartement</th>
+                                                    <th scope="col">Étage</th>
+                                                    <th scope="col">Prénom & Nom</th>
+                                                    <th scope="col">Action</th>
 
-                    <div class="col-md-3 mt-3">
-                        <div class="card p-3 bg-danger text-light text-center">
-                            <p class="fs-5">Nombre d'appartement</p>
-                            <p class="fs-1">{{ count($units) }}</p>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($units->sortBy('floor') as $index => $unit)
+                                                    <tr>
+                                                        <th scope="row">{{$index + 1 }}</th>
+                                                        <td>{{ $unit->name }}</td>
+                                                        <td>{{ $unit->floor }}</td>
+                                                        @if($unit->tenant)
+                                                            <td>{{ $unit->tenant->firstName }} {{ $unit->tenant->lastName }}</td>
+                                                        @else
+                                                            <td>Aucun locataire</td>
+                                                        @endif
+                                                        <td class="d-flex align-items-center">
+                                                            <form action="{{route('properties.units_delete', $unit->id)}}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('POST')
+                                                                <button class="btn btn-danger me-2 p-1">Supprimer</button>
+                                                            </form>
+                                                            <a href="{{route('properties.show_units', $unit->id)}}">
+                                                                <button class="btn btn-primary p-1">Voir</button>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
 
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mt-3">
-                        <div class="card p-3 bg-info text-light text-center">
-                            <p class="fs-5">Nombre d'appartement</p>
-                            <p class="fs-1">{{ count($units) }}</p>
-
-                        </div>
-                    </div> --}}
-
-                </div>
-        @elseif ($currentTab === 'lots')
-                <a href="{{route('properties.tenants_add', $building->id)}}">
-                    <button class="btn btn-primary mb-3"><i class="fas fa-plus"></i> Ajouter </button>
-                </a>
-                <div class="d-flex flex-wrap justify-content-start">
-                    @foreach ($units->sortBy('floor') as $index => $unit)
-                                @php
-                                    $status = strtolower($unit->status);
-                                    $styles = [
-                                        'libre' => ['bg' => 'bg-success', 'icon' => 'fa-check-circle', 'text' => 'Libre'],
-                                        'loué' => ['bg' => 'bg-primary', 'icon' => 'fa-user', 'text' => 'Loué'],
-                                        'en travaux' => ['bg' => 'bg-warning text-dark', 'icon' => 'fa-tools', 'text' => 'En Travaux']
-                                    ];
-                                    $style = $styles[$status] ?? ['bg' => 'bg-secondary', 'icon' => 'fa-question-circle', 'text' => 'Inconnu'];
-                                @endphp
-
-                                <div class="col-md-3 me-3 mb-3">
-                                    <div class="card border-0 rounded-lg text-center p-3 position-relative unit-card">
-                                        <div class="position-absolute top-0 end-0 m-2">
-                                            <span class="badge {{ $style['bg'] }}">
-                                                <i class="fas {{ $style['icon'] }}"></i> {{ $style['text'] }}
-                                            </span>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="icon-box mb-3">
-                                                <x-heroicon-o-home class="units-icon text-secondary" style="font-size: 40px;" />
-                                            </div>
-                                            <h5 class="card-title text-dark fw-bold">{{ $unit->name }}</h5>
-                                            @if($unit->tenant)
-                                                <p class="text-muted m-0">{{ $unit->tenant->firstName }} {{ $unit->tenant->lastName }}</p>
-                                            @else
-                                                <p class="text-muted m-0">Aucun locataire</p>
-                                            @endif
-                                            <p class="text-muted m-0">Étage : {{ $unit->floor }}</p>
-                                            <p class="badge bg-secondary">Appartement n°{{ $index + 1 }}</p>
-                                            <div class="d-flex justify-content-center ">
-                                            <form action="{{route('properties.units_delete', $unit->id)}}" method="POST">
-                                                @csrf
-                                                @method('POST')
-                                                <button class="btn btn-danger me-2">Supprimer</button>
-                                            </form>
-                                            </a>
-                                            <a href="{{route('properties.show_units', $unit->id)}}">
-                                                <button class="btn btn-primary">Voir</button>
-                                            </a>
-                                        </div>
-                                        </div>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+        @elseif ($currentTab === 'tech')
+        <div class=".container-fluid p-0 m-0" style="overflow-x: hidden">
+                <h4>Gestion Technique</h4>
+
+                <form method="POST" action="{{ route('technical_folders.store', $building->id) }}">
+                    @csrf
+                    <div class="input-group mb-3">
+                        <input type="text" name="name" class="form-control" placeholder="Nom du dossier">
+                        <button class="btn btn-success">Créer</button>
+                    </div>
+                </form>
+
+                <hr>
+                <div class="accordion" id="technicalFolders">
+                    @foreach ($technicalFolders as $folder)
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#folder-{{ $folder->id }}">
+                                    📁 {{ $folder->name }}
+                                </button>
+                            </h2>
+                            <div id="folder-{{ $folder->id }}" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    <form method="POST" action="{{ route('technical_files.store', $folder->id) }}"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="input-group mb-3">
+                                            <input type="file" name="file" class="form-control">
+                                            <button class="btn btn-primary">Uploader</button>
+                                        </div>
+                                    </form>
+                
+                                    <ul class="list-group">
+                                        @foreach ($folder->files as $file)
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <a href="{{ Storage::url($file->file_path) }}" target="_blank">{{ $file->file_name }}</a>
+                                                <form method="POST" action="{{ route('technical_files.delete', $file->id) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-sm">Supprimer</button>
+                                                </form>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     @endforeach
                 </div>
+                
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var accordions = document.querySelectorAll(".accordion-button");
+                    accordions.forEach(function (btn) {
+                        btn.addEventListener("click", function () {
+                            var target = this.getAttribute("data-bs-target");
+                            var collapse = document.querySelector(target);
+                            if (collapse.classList.contains("show")) {
+                                bootstrap.Collapse.getInstance(collapse).hide();
+                            } else {
+                                new bootstrap.Collapse(collapse, { toggle: true });
+                            }
+                        });
+                    });
+                });
+            </script>
 
-
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
         @elseif ($currentTab === 'compta')
             <p>Informations financières et décomptes pour l'immeuble...</p>
