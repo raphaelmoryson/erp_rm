@@ -159,9 +159,13 @@
     .profil {
         width: 50px;
         height: 50px;
-        background-size: cover;
-        background-image: url('https://www.galeriephotographe.com/wp-content/uploads/2020/04/shootings-photo-de-profil-reseaux-sociaux-et-professionnel-a-colmar_015.jpg');
         border-radius: 50%;
+        background-color: #f7fafc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        padding-top: 15px;
     }
 
 }
@@ -171,4 +175,91 @@
 
 .btn-logout:hover {
     background-color: #ff3333;
+}
+
+/* Nouveau style pour la sidebar rétractée */
+.sidebar.collapsed {
+    width: 95px; /* Réduit la largeur */
+}
+
+.sidebar.collapsed .input-navbar {
+    display: none;
+}
+
+.sidebar.collapsed .logo {
+    font-size: 1em; /* Cache le texte du logo */
+    padding: 1rem;
+}
+
+.sidebar.collapsed nav {
+    display: flex;
+    align-items: center ;
+}
+
+.sidebar.collapsed nav a {
+    width: 80px; /* Réduit la largeur des liens */
+    justify-content: center; /* Centre l'icône */
+    display: flex;
+    align-items: center ;
+    justify-content: center;
+    padding: 0;
+}
+.sidebar.collapsed .icon-navbar {
+    padding-right: 0px!important;
+}
+.sidebar.collapsed nav a span {
+    display: none; /* Cache les titres des liens */
+}
+
+.sidebar.collapsed .search-icon {
+    display: none; /* Cache l'icône de recherche */
+}
+.sidebar.collapsed .bottom-navbar {
+    padding: 15px!important;
+    font-size: 12px;
+    .profil {
+        display: none;
+    }
+}
+.toggle-sidebar {
+    background-color: #0056A3;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    bottom: 10%;
+    left: 1%;
+    transform: translateY(-50%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    font-size: 1.5rem;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toggle-sidebar:hover {
+    background-color: #004182; /* Légère modification au survol */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-sidebar:focus {
+    outline: none;
+}
+
+.toggle-sidebar:before {
+    content: '›';
+    margin-top: 15px;
+    font-size: 2.5em;
+    transform: rotate(180deg); /* Icône inversée lorsque la sidebar est réduite */
+}
+
+.sidebar.collapsed .toggle-sidebar:before {
+    transform: rotate(0deg); /* Icône qui change de direction */
+    margin-bottom: 35px;
+    font-size: 1.5em!important;
+
 }

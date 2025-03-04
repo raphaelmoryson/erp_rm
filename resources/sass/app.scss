@@ -20,3 +20,17 @@ body {
 }
 
 
+
+.table-immoFlow {
+    --bs-table-color: #fff;
+    --bs-table-bg: #093B69;
+    --bs-table-border-color: #4d5154;
+    --bs-table-striped-bg: #093B69;
+    --bs-table-striped-color: #fff;
+    --bs-table-active-bg: #373b3e;
+    --bs-table-active-color: #fff;
+    --bs-table-hover-bg: #323539;
+    --bs-table-hover-color: #fff;
+    color: #093B69;
+    border-color: var(--bs-table-border-color);
+}

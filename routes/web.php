@@ -29,11 +29,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/technical_folders/{building}', [TechnicalFolderController::class, 'store'])->name('technical_folders.store');
     Route::post('/technical_files/{folder}', [TechnicalFileController::class, 'store'])->name('technical_files.store');
     Route::delete('/technical_files/{file}', [TechnicalFileController::class, 'destroy'])->name('technical_files.delete');
+    Route::delete('/technical_folders/{folder}', [TechnicalFolderController::class, 'destroy'])->name('technical_folder.delete');
 
 
     // TENANTS
 
-    Route::get("tenants", [TenantsController::class, "index"])->name('tenants');
+    Route::get("/tenants", [TenantsController::class, "index"])->name('tenants');
+    Route::get("/tenants/create", [TenantsController::class, "create"])->name('tenants.create');
+    Route::get("/tenants/edit/{id}", [TenantsController::class, "edit"])->name('tenants.edit');
+    Route::put('/tenants/{tenant}', [TenantsController::class, 'update'])->name('tenants.update');
+
+    Route::post('/tenants/store', [TenantsController::class, 'store'])->name('tenants.store');
+
 
 });
 

@@ -15,38 +15,46 @@
                             <button type="button" class="btn bg-primary text-light" data-mdb-rippe-init>Rechercher</button>
                         </div>
                     </div>
-                    <div class="properties-grid mt-3">
-                        @foreach($properties as $property)
-                            <div class="property-card">
-                                <div class="property-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
-                                        class="bi bi-building" viewBox="0 0 16 16">
-                                        <path
-                                            d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z" />
-                                        <path
-                                            d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z" />
-                                    </svg>
-                                </div>
-                                <div class="property-info">
-                                    <h2 class="property-name">{{ $property['name'] }}</h2>
-                                    <p class="property-address">{{ $property['address'] }}, {{ $property['zip_code'] }}
-                                        {{ $property['city'] }}
-                                    </p>
-                                    <a href="properties/edit/{{ $property['id'] }}" class="btn-details">Voir Détails</a>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
+                    <table class="table table-striped table-hover">
+                        <thead class="table-immoFlow">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Adresse</th>
+                                <th scope="col">Code Postal</th>
+                                <th scope="col">Ville</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($properties as $index => $property)
+                                <tr>
+                                    <th scope="row">{{ $index + 1 }}</th>
+                                    <td>{{ $property['name'] }}</td>
+                                    <td>{{ $property['address'] }}</td>
+                                    <td>{{ $property['zip_code'] }}</td>
+                                    <td>{{ $property['city'] }}</td>
+                                    <td>
+                                        <a href="{{ url('properties/edit/' . $property['id']) }}"
+                                            class="btn btn-primary btn-sm">
+                                            Voir Détails
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
 
-            <!-- Colonne 2 - Carte interactive -->
             <div class="col-md-2">
-                <div class="map-container ">
+                <div class="map-container">
                     <h3>Emplacement</h3>
                     <div id="map"></div>
                 </div>
             </div>
+            
         </div>
     </div>
 

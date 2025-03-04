@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ERP System - Navbar</title>
-    <!-- Lien vers le fichier CSS compilé -->
+    <link rel="stylesheet" href="path/to/your/css/file.css">
 </head>
 
 <body>
     <div>
-        <div class="sidebar">
+        <div class="sidebar ">
             <div class="logo">ImmoFlow</div>
             <div class="input-navbar">
                 <x-heroicon-o-magnifying-glass class="search-icon" />
@@ -20,45 +20,47 @@
             <nav>
                 <a href="{{ url('/') }}" class="{{ Request::is('/') ? 'active' : '' }}">
                     <x-heroicon-o-home class="icon-navbar" />
-                    Tableau de Bord
+                    <span>Tableau de Bord</span>
                 </a>
 
                 <a href="{{ url('/properties') }}" class="{{ Request::is('properties') ? 'active' : '' }}">
                     <x-heroicon-o-building-office class="icon-navbar" />
-                    Immeuble
+                    <span>Immeuble</span>
                 </a>
 
                 <a href="{{ url('/tenants') }}" class="{{ Request::is('tenants') ? 'active' : '' }}">
                     <x-heroicon-o-user-group class="icon-navbar" />
-                    Locataire
+                    <span>Locataire</span>
                 </a>
+                <button class="toggle-sidebar" id="toggleSidebar"></button>
 
-                {{-- <a href="{{ url('/transactions') }}" class="{{ Request::is('transactions') ? 'active' : '' }}">
-                    <x-heroicon-o-currency-dollar class="icon-navbar" />
-                    Transactions
-                </a>
 
-                <a href="{{ url('/settings') }}" class="{{ Request::is('settings') ? 'active' : '' }}">
-                    <x-heroicon-o-cog class="icon-navbar" />
-                    Paramètres
-                </a> --}}
             </nav>
 
             <div class="bottom-navbar">
                 @auth
-                    <div class="profil"></div>
+                    <div class="profil">
+                        <p>{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}{{ strtoupper(substr(auth()->user()->name, strpos(auth()->user()->name, ' ') + 1, 1)) }}</p>
+                    </div>
                     <div class="user-info">
                         <p><strong>{{ auth()->user()->name }}</strong></p>
                         <p>{{ auth()->user()->role }}</p>
-                        {{-- <form action="/lgt" method="POST">
-                            @csrf
-                            <button type="submit" class="btn-logout">Se déconnecter</button>
-                        </form> --}}
                     </div>
                 @endauth
             </div>
+            
         </div>
+
     </div>
+
+    <script>
+        const toggleButton = document.getElementById('toggleSidebar');
+        const sidebar = document.querySelector('.sidebar');
+
+        toggleButton.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+        });
+    </script>
 </body>
 
 </html>

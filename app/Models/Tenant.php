@@ -18,4 +18,10 @@ class Tenant extends Model
         'adress',
         'status'
     ];
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'id'); 
+    }
+
 }

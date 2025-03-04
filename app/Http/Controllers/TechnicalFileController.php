@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TechnicalFile;
+use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 class TechnicalFileController extends Controller
@@ -23,4 +24,12 @@ class TechnicalFileController extends Controller
 
         return back()->with('success', 'Fichier ajouté avec succès.');
     }
+
+    public function destroy($folderId) {
+        $get = TechnicalFile::where('id', $folderId)->first();
+        File::delete(public_path("storage/".$get->file_path));
+        $get->delete();
+        return back()->with("success","Fichier supprimé avec succès");
+    }
+
 }

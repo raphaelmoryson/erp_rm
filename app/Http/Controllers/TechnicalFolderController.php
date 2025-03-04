@@ -18,4 +18,11 @@ class TechnicalFolderController extends Controller
     
         return back()->with('success', 'Dossier créé avec succès.');
     }
+    public function destroy(Request $request, $buildingId) {
+        $get = TechnicalFolder::where('id', $buildingId)->with('files')->first();
+        $get->delete();
+        return back()->with('success','Dossier supprimé avec succès');
+
+        
+    }
 }

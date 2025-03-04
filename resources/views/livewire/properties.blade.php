@@ -114,7 +114,7 @@
 
                 </div>
         @elseif ($currentTab === 'tech')
-        <div class=".container-fluid p-0 m-0" style="overflow-x: hidden">
+            <div class=".container-fluid p-0 m-0" style="overflow-x: hidden">
                 <h4>Gestion Technique</h4>
 
                 <form method="POST" action="{{ route('technical_folders.store', $building->id) }}">
@@ -130,13 +130,25 @@
                     @foreach ($technicalFolders as $folder)
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#folder-{{ $folder->id }}">
-                                    📁 {{ $folder->name }}
-                                </button>
+                                <div class="d-flex">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#folder-{{ $folder->id }}">
+                                        📁 {{ $folder->name }}
+
+                                    </button>
+
+                                    <form method="POST" action="{{ route('technical_folder.delete', $folder->id) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm">Supprimer</button>
+                                    </form>
+                                </div>
+
                             </h2>
                             <div id="folder-{{ $folder->id }}" class="accordion-collapse collapse show">
+
                                 <div class="accordion-body">
+
                                     <form method="POST" action="{{ route('technical_files.store', $folder->id) }}"
                                         enctype="multipart/form-data">
                                         @csrf
@@ -145,11 +157,12 @@
                                             <button class="btn btn-primary">Uploader</button>
                                         </div>
                                     </form>
-                
+
                                     <ul class="list-group">
                                         @foreach ($folder->files as $file)
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <a href="{{ Storage::url($file->file_path) }}" target="_blank">{{ $file->file_name }}</a>
+                                                <a href="{{ Storage::url($file->file_path) }}"
+                                                    target="_blank">{{ $file->file_name }}</a>
                                                 <form method="POST" action="{{ route('technical_files.delete', $file->id) }}">
                                                     @csrf
                                                     @method('DELETE')
@@ -163,7 +176,7 @@
                         </div>
                     @endforeach
                 </div>
-                
+
             </div>
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
