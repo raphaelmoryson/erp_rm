@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PropertiesController;
+use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TechnicalFileController;
 use App\Http\Controllers\TechnicalFolderController;
 use App\Http\Controllers\TenantsController;
+use App\Http\Controllers\UnitController;
 use App\Models\Property;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +25,12 @@ Route::group(['middleware' => ['auth']], function () {
     // PROPERTIES / UNITS
     Route::post('/properties/delete/units/{id}', [PropertiesController::class, 'units_delete'])->name('properties.units_delete');
 
-    Route::get('/properties/units/{id}', [PropertiesController::class, 'show_units'])->name('properties.show_units');
+
+    // UNITS LINK PROERTIES
+    Route::get('/properties/show/{properties}/units/{id}', [PropertiesController::class, 'show_units'])->name('properties.show_units');
+
+    Route::post('/unit/{id}/assign-tenant', [UnitController::class, 'assignTenant'])->name('unit.assign_tenant');
+    Route::post('/unit/{id}/remove-tenant', [UnitController::class, 'removeTenant'])->name('unit.remove_tenant');
 
     // PROPERTIES / TEHCNIQUE
 
@@ -41,6 +49,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('/tenants/store', [TenantsController::class, 'store'])->name('tenants.store');
 
+    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
+    Route::post('/payments/{id}/mark-as-paid', [PaymentController::class, 'markAsPaid'])->name('payments.markAsPaid');
+
 
 });
 
@@ -48,3 +59,5 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout']);
 
+Route::get('/support/{slug}', [SupportController::class, 'create'])->name('support.create');
+Route::post('/support/{slug}/send', [SupportController::class, 'send'])->name('support.send');

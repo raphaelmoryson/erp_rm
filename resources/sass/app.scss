@@ -1,10 +1,23 @@
-
 @import "../sass/Components/Navbar.scss";
 @import "../sass/Page/Properties.scss";
+@import "../sass/Base/Background.scss";
+
+/* Fonts */
+@import url('https://fonts.bunny.net/css?family=Nunito');
+/* Variables */
+
+// Variables
+// Import Bootstrap
+@import "bootstrap/scss/bootstrap";
+
+
+// Bootstrap
+
 * {
     margin: 0;
     padding: 0;
 }
+
 body {
     background-color: #f7fafc;
     overflow: hidden;
@@ -16,7 +29,7 @@ body {
     overflow: auto;
     display: flex;
     flex-direction: column;
-    
+
 }
 
 
@@ -34,3 +47,4 @@ body {
     color: #093B69;
     border-color: var(--bs-table-border-color);
 }
+

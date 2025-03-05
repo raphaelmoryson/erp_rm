@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ERP System - Navbar</title>
-    <link rel="stylesheet" href="path/to/your/css/file.css">
+    
 </head>
 
 <body>

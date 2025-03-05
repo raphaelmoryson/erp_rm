@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use App\Models\Property;
 use App\Models\TechnicalFolder;
 use App\Models\Tenant;
@@ -71,9 +72,17 @@ class PropertiesController extends Controller
         $building = Property::where("id", $id)->first();
         $units = Unit::where('property_id', $id)->with('tenant')->get();
         $occupancyRate = (count($units) / $building->max_units) * 100;
-        $technicalFolders = TechnicalFolder::where('property_id',  $id)->with('files')->get();
-        // return $technicalFolders;
-        return view('page.properties.edit-properties', ['units' => $units, 'building' => $building, 'occupancyRate' => $occupancyRate, 'technicalFolders' => $technicalFolders]);
+        $technicalFolders = TechnicalFolder::where('property_id', $id)->with('files')->get();
+        $unitIds = $units->pluck('id'); // Récupère les IDs de tous les appartements liés à la propriété
+
+        $payments = Payment::whereIn('unit_id', $unitIds)
+            ->with('tenant', 'unit')
+            ->orderBy('due_date', 'asc')
+            ->get();
+
+
+        // return $payments;
+        return view('page.properties.edit-properties', ['units' => $units, 'building' => $building, 'occupancyRate' => $occupancyRate, 'technicalFolders' => $technicalFolders, 'payments' => $payments]);
     }
     public function tenants_add($id)
     {
@@ -84,20 +93,23 @@ class PropertiesController extends Controller
 
     public function tenants_post(Request $request, int $id)
     {
-        if ($request->tenant_id == "0") {
-            $request->tenant_id == null;
-        }
+        // Vérifier si le tenant_id est "0" et le remplacer par NULL
+        $tenantId = ($request->tenant_id == "0") ? null : $request->tenant_id;
+
         Unit::create([
             'property_id' => $id,
-            'tenant_id' => $request->tenant_id,
+            'tenant_id' => $tenantId, // Correction ici
             'type' => $request->type,
             'area' => $request->area,
             'status' => $request->status,
+            'initial_rent_price' => $request->initial_rent_price,
             'floor' => $request->floor,
             'name' => $request->name,
         ]);
-        return redirect('/properties/edit/' . $id)->with('success', 'Appartement créer avec succès');
+
+        return redirect('/properties/edit/' . $id)->with('success', 'Appartement créé avec succès');
     }
+
     public function units_delete(int $id)
     {
         $info = Unit::findOrFail($id);
@@ -105,9 +117,11 @@ class PropertiesController extends Controller
         return redirect('/properties/edit/' . $info->property_id)->with('success', 'Appartement supprimer avec succès');
 
     }
-
-    public function show_units(Request $request, int $id) {
-        $units = Unit::where("id", $id)->first();
-        return view('page.properties.units.show', ["units"=> $units]);
+    public function show_units(Request $request, int $properties, int $id)
+    {
+        $tenants = Tenant::all();
+        $units = Unit::where("id", $id)->where('property_id', $properties)->with('property', 'tenant')->first();
+        return view('page.properties.units.show', ["units" => $units, 'tenants' => $tenants]);
     }
+
 }

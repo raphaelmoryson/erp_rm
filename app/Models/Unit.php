@@ -16,6 +16,7 @@ class Unit extends Model
         'name',
         'area',
         'status',
+        'initial_rent_price',
         'floor',
     ];
 

@@ -14,7 +14,9 @@ return new class extends Migration {
             $table->enum('type', ['appartement', 'bureau', 'commerce']);
             $table->float('area');
             $table->enum('status', ['libre', 'loué', 'en travaux'])->default('libre');
+            $table->decimal('initial_rent_price', 10, 2)->default(0);
             $table->string('floor');
+            $table->string('slugId')->default("")->nullable(true);
             $table->string('name');
             $table->timestamps();
         });

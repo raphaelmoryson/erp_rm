@@ -91,13 +91,16 @@
                                                             <td>Aucun locataire</td>
                                                         @endif
                                                         <td class="d-flex align-items-center">
-                                                            <form action="{{route('properties.units_delete', $unit->id)}}"
+                                                            <form action="{{ route('properties.units_delete', $unit->id) }}"
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('POST')
                                                                 <button class="btn btn-danger me-2 p-1">Supprimer</button>
                                                             </form>
-                                                            <a href="{{route('properties.show_units', $unit->id)}}">
+
+
+                                                            <a
+                                                                href="{{ route('properties.show_units', ['properties' => $building->id, 'id' => $unit->id]) }}">
                                                                 <button class="btn btn-primary p-1">Voir</button>
                                                             </a>
                                                         </td>
@@ -198,7 +201,50 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
         @elseif ($currentTab === 'compta')
-            <p>Informations financières et décomptes pour l'immeuble...</p>
+            <div class="container-fluid mt-4">
+                <h2>Gestion des Paiements</h2>
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Locataire</th>
+                            <th>Appartement</th>
+                            <th>Montant (€)</th>
+                            <th>Statut</th>
+                            <th>Date limite</th>
+                            <th>Paiement</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($payments as $payment)
+                            <tr>
+                                <td>{{ $payment->tenant->firstName }} {{ $payment->tenant->lastName }}</td>
+                                <td>{{ $payment->unit->name }}</td>
+                                <td>{{ number_format($payment->amount, 2) }} €</td>
+                                <td>
+                                    <span
+                                        class="badge bg-{{ $payment->status == 'payé' ? 'success' : ($payment->status == 'retard' ? 'danger' : 'warning') }}">
+                                        {{ ucfirst($payment->status) }}
+                                    </span>
+                                </td>
+                                <td>{{ date('d/m/Y', strtotime($payment->due_date)) }}</td>
+                                <td>{{ $payment->paid_at ? date('d/m/Y', strtotime($payment->paid_at)) : 'Non payé' }}</td>
+                                <td>
+                                    @if($payment->status != 'payé')
+                                        <form action="{{ route('payments.markAsPaid', $payment->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm">Marquer comme payé</button>
+                                        </form>
+                                    @else
+                                        <span class="text-muted">✔ Déjà payé</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
         @endif
         </div>
         @livewireScripts

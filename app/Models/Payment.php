@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,16 +8,15 @@ class Payment extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'invoice_id',
-        'amount',
-        'payment_date',
-        'method',
-        'status',
-    ];
+    protected $fillable = ['tenant_id', 'unit_id', 'amount', 'status', 'due_date', 'paid_at', 'payment_method'];
 
-    public function invoice()
+    public function tenant()
     {
-        return $this->belongsTo(Invoice::class);
+        return $this->belongsTo(Tenant::class);
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
     }
 }

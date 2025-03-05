@@ -20,6 +20,14 @@
         </div>
 
         <div class="form-group mb-2">
+            <label for="initial_rent_price">Prix du loyer : </label>
+            <input type="text" class="form-control" id="initial_rent_price" name="initial_rent_price" placeholder="Entrez l'étage" required>
+        </div>
+
+
+        
+
+        <div class="form-group mb-2">
             <label for="type">Statuts :</label>
             <select class="form-select" aria-label="Default select example" name="type" id="type">
                 <option value="appartement">Appartement</option>

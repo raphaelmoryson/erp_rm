@@ -11,14 +11,17 @@ class Properties extends Component
     public $currentTab = 'info';
     public $units = [];
     public $building = [];
+    public $payments = [];
 
     public $technicalFolders = [];
 
-    public function mount($building, $occupancyRate, $technicalFolders)
+    public function mount($building, $occupancyRate, $technicalFolders,$payments)
     {
         $this->building = $building;
         $this->occupancyRate = $occupancyRate;
         $this->technicalFolders = $technicalFolders;
+        $this->technicalFolders = $technicalFolders;
+        $this->payments = $payments;
     }
 
     public function setTab($tab)
