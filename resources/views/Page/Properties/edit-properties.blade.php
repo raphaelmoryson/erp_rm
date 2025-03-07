@@ -12,5 +12,5 @@
             <p>{{ session('success') }}</p>
         </div>
     @endif
-    @livewire('properties', ['building' => $building, 'units' => $units, 'occupancyRate' => $occupancyRate, 'technicalFolders' => $technicalFolders, 'payments' => $payments])
+    @livewire('properties', ['companies' => $companies,'building' => $building, 'units' => $units, 'occupancyRate' => $occupancyRate, 'technicalFolders' => $technicalFolders, 'payments' => $payments, 'occupiedUnits' => $occupiedUnits])
 @endsection

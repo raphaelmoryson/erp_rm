@@ -37,7 +37,7 @@
         </div>
         <div class="form-group">
             <label for="address">Adresse</label>
-            <input type="text" class="form-control" id="address" name="address" placeholder="Entrez l'adresse" required>
+            <input type="text" class="form-control" id="address" name="address" placeholder="Saisissez l'adresse" required>
         </div>
         <div class="form-group">
             <label for="city">Ville</label>

@@ -5,13 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ERP System - Navbar</title>
-    
+
 </head>
 
 <body>
     <div>
         <div class="sidebar ">
-            <div class="logo">ImmoFlow</div>
+            <div class="d-flex">
+                <div class="logoName">
+                    <img style="width: 110px; height: 75px;" src="/images/logo.png" alt="">
+
+                </div>
+            </div>
             <div class="input-navbar">
                 <x-heroicon-o-magnifying-glass class="search-icon" />
                 <input type="text" placeholder="Recherche">
@@ -32,6 +37,11 @@
                     <x-heroicon-o-user-group class="icon-navbar" />
                     <span>Locataire</span>
                 </a>
+
+                <a href="{{ url('/company') }}" class="{{ Request::is('company') ? 'active' : '' }}">
+                    <x-heroicon-o-briefcase class="icon-navbar" />
+                    <span>Entreprise</span>
+                </a>
                 <button class="toggle-sidebar" id="toggleSidebar"></button>
 
 
@@ -40,7 +50,8 @@
             <div class="bottom-navbar">
                 @auth
                     <div class="profil">
-                        <p>{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}{{ strtoupper(substr(auth()->user()->name, strpos(auth()->user()->name, ' ') + 1, 1)) }}</p>
+                        <p>{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}{{ strtoupper(substr(auth()->user()->name, strpos(auth()->user()->name, ' ') + 1, 1)) }}
+                        </p>
                     </div>
                     <div class="user-info">
                         <p><strong>{{ auth()->user()->name }}</strong></p>
@@ -48,7 +59,7 @@
                     </div>
                 @endauth
             </div>
-            
+
         </div>
 
     </div>

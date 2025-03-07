@@ -16,16 +16,23 @@
 
         <div class="form-group mb-2">
             <label for="floor">Étage : </label>
-            <input type="text" class="form-control" id="floor" name="floor" placeholder="Entrez l'étage" required>
+            <input type="text" class="form-control" id="floor" name="floor" placeholder="Saisissez l'étage" required>
         </div>
 
         <div class="form-group mb-2">
             <label for="initial_rent_price">Prix du loyer : </label>
-            <input type="text" class="form-control" id="initial_rent_price" name="initial_rent_price" placeholder="Entrez l'étage" required>
+            <input type="text" class="form-control" id="initial_rent_price" name="initial_rent_price"
+                placeholder="Saisissez l'étage" required>
         </div>
 
 
-        
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="check" id="checkLoyer" name="checkLoyer">
+            <label class="form-check-label" for="checkLoyer">
+                Dans l'appartement actuellement
+            </label>
+        </div>
+
 
         <div class="form-group mb-2">
             <label for="type">Statuts :</label>

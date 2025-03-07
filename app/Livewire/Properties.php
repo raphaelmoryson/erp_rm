@@ -12,17 +12,26 @@ class Properties extends Component
     public $units = [];
     public $building = [];
     public $payments = [];
+    public $companies = [];
+    
+    public $occupiedUnits = 0;
 
     public $technicalFolders = [];
 
-    public function mount($building, $occupancyRate, $technicalFolders,$payments)
+    public function mount($building, $occupancyRate, $technicalFolders, $payments, $occupiedUnits, $companies)
     {
+        if (!is_object($building)) {
+            throw new \Exception("Le bâtiment n'est pas un objet valide");
+        }
+    
         $this->building = $building;
         $this->occupancyRate = $occupancyRate;
         $this->technicalFolders = $technicalFolders;
-        $this->technicalFolders = $technicalFolders;
         $this->payments = $payments;
+        $this->occupiedUnits = $occupiedUnits;
+        $this->companies = $companies;
     }
+    
 
     public function setTab($tab)
     {
@@ -35,13 +44,7 @@ class Properties extends Component
 
     public function render()
     {
-        $data = ['building' => $this->building, 'occupancyRate'=> $this->occupancyRate, 'technicalFolders' => $this->technicalFolders];
-
-        if ($this->currentTab === 'lots') {
-            $data['units'] = $this->building;
-        } elseif ($this->currentTab === 'compta') {
-            $data['building'] = $this->building;
-        }
+        $data = ['units' => $this->units, 'building' => $this->building, 'occupancyRate' => $this->occupancyRate, 'technicalFolders' => $this->technicalFolders, 'occupiedUnits' => $this->occupiedUnits];
 
         return view('livewire.properties', $data);
     }

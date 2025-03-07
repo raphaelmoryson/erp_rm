@@ -109,15 +109,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'en attente',
         ]);
 
-        // Créer un paiement
-        Payment::create([
-            'invoice_id' => $invoice->id,
-            'amount' => 1800.00,
-            'payment_date' => Carbon::now(),
-            'method' => 'virement',
-            'status' => 'validé',
-        ]);
-
+ 
         // Créer une intervention technique
         Maintenance::create([
             'unit_id' => $unit->id,

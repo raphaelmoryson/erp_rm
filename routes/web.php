@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PropertiesController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TechnicalFileController;
 use App\Http\Controllers\TechnicalFolderController;
@@ -12,6 +14,8 @@ use App\Http\Controllers\UnitController;
 use App\Models\Property;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+
+use Illuminate\Support\Facades\Storage;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [IndexController::class, 'index']);
@@ -52,6 +56,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
     Route::post('/payments/{id}/mark-as-paid', [PaymentController::class, 'markAsPaid'])->name('payments.markAsPaid');
 
+    // ENTREPRISE LISTE 
+
+    Route::get("/company", [CompanyController::class, "index"])->name('company');
+
+    Route::post('/report/store', [ReportController::class, 'store'])->name('report.store');
+    
 
 });
 

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Payment;
 use App\Models\Property;
 use App\Models\TechnicalFolder;
 use App\Models\Tenant;
 use App\Models\Unit;
 use App\Models\User;
+use Carbon\Carbon;
 use Carbon\Traits\Units;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -70,11 +72,12 @@ class PropertiesController extends Controller
     public function show($id)
     {
         $building = Property::where("id", $id)->first();
+        $companies = Company::all();;
         $units = Unit::where('property_id', $id)->with('tenant')->get();
         $occupancyRate = (count($units) / $building->max_units) * 100;
         $technicalFolders = TechnicalFolder::where('property_id', $id)->with('files')->get();
-        $unitIds = $units->pluck('id'); // Récupère les IDs de tous les appartements liés à la propriété
-
+        $unitIds = $units->pluck('id');
+        $occupiedUnits = Unit::where('property_id', $id)->whereNotNull('tenant_id')->count();
         $payments = Payment::whereIn('unit_id', $unitIds)
             ->with('tenant', 'unit')
             ->orderBy('due_date', 'asc')
@@ -82,7 +85,7 @@ class PropertiesController extends Controller
 
 
         // return $payments;
-        return view('page.properties.edit-properties', ['units' => $units, 'building' => $building, 'occupancyRate' => $occupancyRate, 'technicalFolders' => $technicalFolders, 'payments' => $payments]);
+        return view('page.properties.edit-properties', ['companies' => $companies, 'units' => $units, 'building' => $building, 'occupancyRate' => $occupancyRate, 'technicalFolders' => $technicalFolders, 'payments' => $payments, 'occupiedUnits' => $occupiedUnits]);
     }
     public function tenants_add($id)
     {
@@ -93,12 +96,11 @@ class PropertiesController extends Controller
 
     public function tenants_post(Request $request, int $id)
     {
-        // Vérifier si le tenant_id est "0" et le remplacer par NULL
         $tenantId = ($request->tenant_id == "0") ? null : $request->tenant_id;
 
-        Unit::create([
+        $unit = Unit::create([
             'property_id' => $id,
-            'tenant_id' => $tenantId, // Correction ici
+            'tenant_id' => $tenantId,
             'type' => $request->type,
             'area' => $request->area,
             'status' => $request->status,
@@ -107,8 +109,43 @@ class PropertiesController extends Controller
             'name' => $request->name,
         ]);
 
+        $today = Carbon::now();
+        $firstDayOfMonth = Carbon::now()->startOfMonth();
+        $lastDayOfMonth = Carbon::now()->endOfMonth();
+        $totalDaysInMonth = $lastDayOfMonth->day;
+
+        if ($tenantId !== null) {
+
+            if ($today->greaterThan($firstDayOfMonth)) {
+                $remainingDays = $totalDaysInMonth - $today->day + 1;
+                $dailyRent = $request->initial_rent_price / $totalDaysInMonth;
+                $proratedAmount = round($dailyRent * $remainingDays, 2);
+            } else {
+                $proratedAmount = $request->initial_rent_price;
+            }
+
+
+
+            if ($request->checkLoyer == "check") {
+                $proratedAmount = $request->initial_rent_price;
+            }
+
+            Payment::create([
+                'tenant_id' => $tenantId,
+                'unit_id' => $unit->id,
+                'amount' => $proratedAmount,
+                'status' => 'en attente',
+                'due_date' => $lastDayOfMonth,
+                'paid_at' => null,
+                'payment_method' => null,
+            ]);
+        }
+
         return redirect('/properties/edit/' . $id)->with('success', 'Appartement créé avec succès');
+        // return $request;
     }
+
+
 
     public function units_delete(int $id)
     {

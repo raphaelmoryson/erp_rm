@@ -29,10 +29,7 @@ body {
     overflow: auto;
     display: flex;
     flex-direction: column;
-
 }
-
-
 
 .table-immoFlow {
     --bs-table-color: #fff;
@@ -48,3 +45,23 @@ body {
     border-color: var(--bs-table-border-color);
 }
 
+.logo-login {
+    width: 200px;
+}
+
+.bg-imglogin {
+    background-image: url('/public/images/backloginpage.jpg') !important;
+    background-size: cover;
+    padding-top: 20px;
+}
+
+.btn-login {
+    background-color: #02A2EB;
+    border-radius: 15px;
+    height: 60px;
+    font-size: 24.98px;
+    &:hover {
+        background-color: #02A2EB;
+
+    }
+}
