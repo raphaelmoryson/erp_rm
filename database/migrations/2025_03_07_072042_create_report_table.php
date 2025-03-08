@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->foreignId('company_id')->constrained('company')->onDelete('cascade');
             $table->text('description');
             $table->string('photo')->nullable();
+            $table->string('linkUrl')->nullable();
             $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
             $table->timestamps();
         });

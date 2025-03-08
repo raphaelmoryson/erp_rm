@@ -14,6 +14,7 @@ class Report extends Model
         'unit_id',
         'company_id',
         'description',
+        'linkUrl',
         'photo',
         'status',
     ];
