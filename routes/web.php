@@ -61,11 +61,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get("/company", [CompanyController::class, "index"])->name('company');
 
     Route::post('/report/store', [ReportController::class, 'store'])->name('report.store');
-
-
-
-
 });
+Route::get('/report/{slug}', [ReportController::class, 'report_postfile'])->name('report.post_file');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);

@@ -33,17 +33,15 @@ class PaymentsCron extends Command
         $tenants = Tenant::where('status', 'actif')->with('unit')->get(); // Charge la relation 'unit'
 
         foreach ($tenants as $tenant) {
-            if (!is_null($tenant->unit)) { // Vérifie que le locataire a bien un appart attribué
-                Payment::create(
-                    [
-                        'tenant_id' => $tenant->id,
-                        'unit_id' => $tenant->unit->id,
-                        'due_date' => Carbon::now()->endOfMonth(),
-                        'amount' => $tenant->unit->initial_rent_price, // 💰 Montant du loyer
-                        'status' => 'en attente',
-                    ]
-                );
-            }
+            Payment::create(
+                [
+                    'tenant_id' => $tenant->id,
+                    'unit_id' => $tenant->unit->id,
+                    'due_date' => Carbon::now()->endOfMonth(),
+                    'amount' => $tenant->unit->initial_rent_price, // 💰 Montant du loyer
+                    'status' => 'en attente',
+                ]
+            );
         }
         \Log::info('Cron job completed');
     }

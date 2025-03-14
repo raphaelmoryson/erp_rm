@@ -21,7 +21,7 @@ class Report extends Model
 
     public function property()
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(Properties::class);
     }
 
     public function unit()

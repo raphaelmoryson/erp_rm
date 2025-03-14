@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Property extends Model
+class Properties extends Model
 {
     use HasFactory;
 
+    protected $table = "properties";
     protected $fillable = [
-        'owner_id',
         'manager_id',
         'name',
         'address',
@@ -22,10 +22,6 @@ class Property extends Model
         'status',
     ];
 
-    public function owner()
-    {
-        return $this->belongsTo(User::class, 'owner_id');
-    }
 
     public function manager()
     {

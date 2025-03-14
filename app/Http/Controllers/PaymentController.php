@@ -32,5 +32,7 @@ class PaymentController extends Controller
             'paid_at' => now()
         ]);
 
+        return redirect()->back();
+
     }
 }

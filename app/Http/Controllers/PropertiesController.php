@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Payment;
-use App\Models\Property;
+use App\Models\Properties;
 use App\Models\TechnicalFolder;
 use App\Models\Tenant;
 use App\Models\Unit;
@@ -18,7 +18,7 @@ class PropertiesController extends Controller
 {
     public function index()
     {
-        $properties = Property::all();
+        $properties = Properties::all();
         return view('page.properties.properties', ['properties' => $properties]);
     }
 
@@ -52,7 +52,7 @@ class PropertiesController extends Controller
             $long = $longitude;
             $lat = $latitude;
 
-            $properties = Property::create([
+            $properties = Properties::create([
                 'manager_id' => $request->manager,
                 'name' => $request->name,
                 'address' => $request->address,
@@ -71,25 +71,26 @@ class PropertiesController extends Controller
 
     public function show($id)
     {
-        $building = Property::where("id", $id)->first();
-        $companies = Company::all();;
+        $building = Properties::findOrFail($id);
+        $companies = Company::all();
         $units = Unit::where('property_id', $id)->with('tenant')->get();
-        $occupancyRate = (count($units) / $building->max_units) * 100;
+        
+        $maxUnits = $building->max_units ?: 1;
+        $occupancyRate = (count($units) / $maxUnits) * 100;
+    
         $technicalFolders = TechnicalFolder::where('property_id', $id)->with('files')->get();
         $unitIds = $units->pluck('id');
-        $occupiedUnits = Unit::where('property_id', $id)->whereNotNull('tenant_id')->count();
-        $payments = Payment::whereIn('unit_id', $unitIds)
-            ->with('tenant', 'unit')
-            ->orderBy('due_date', 'asc')
-            ->get();
-
-
-        // return $payments;
-        return view('page.properties.edit-properties', ['companies' => $companies, 'units' => $units, 'building' => $building, 'occupancyRate' => $occupancyRate, 'technicalFolders' => $technicalFolders, 'payments' => $payments, 'occupiedUnits' => $occupiedUnits]);
+        $occupiedUnits = $units->whereNotNull('tenant_id')->count();
+        $payments = Payment::whereIn('unit_id', $unitIds)->with('tenant', 'unit')->orderBy('due_date')->get();
+    
+        return view('page.properties.edit-properties', compact(
+            'companies', 'units', 'building', 'occupancyRate', 'technicalFolders', 'payments', 'occupiedUnits'
+        ));
     }
+    
     public function tenants_add($id)
     {
-        $building = Property::where("id", $id)->first();
+        $building = Properties::where("id", $id)->first();
         $tenants = Tenant::all();
         return view('page.properties.units.add', ['building' => $building, 'tenants' => $tenants]);
     }
@@ -154,11 +155,19 @@ class PropertiesController extends Controller
         return redirect('/properties/edit/' . $info->property_id)->with('success', 'Appartement supprimer avec succès');
 
     }
-    public function show_units(Request $request, int $properties, int $id)
+    public function show_units(int $properties, int $id)
     {
         $tenants = Tenant::all();
         $units = Unit::where("id", $id)->where('property_id', $properties)->with('property', 'tenant')->first();
-        return view('page.properties.units.show', ["units" => $units, 'tenants' => $tenants]);
+        $allPayment = Payment::where('unit_id', $units->id)->get();
+        $monthPayment = Payment::where('unit_id', $units->id)
+            ->where(function ($query) {
+                $query->whereMonth('created_at', '=', Carbon::now()->month);
+            })
+            ->first();
+
+        // return $monthPayment;
+        return view('page.properties.units.show', ["units" => $units, 'tenants' => $tenants, 'allPayment' => $allPayment, 'monthPayment' => $monthPayment]);
     }
 
 }
