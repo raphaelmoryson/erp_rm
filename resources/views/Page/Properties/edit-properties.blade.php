@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Immeuble')
+@section('title', 'Immeuble n°'.$building->id)
 @section('marge', 30)
 
 @section('content')
@@ -51,15 +51,15 @@
     
                         <div class="col-md-3 mt-3">
                             <div class="card p-3 bg-warning text-dark text-center">
-                                <p class="fs-5">Revenu mensuel estimé</p>
-                                <p class="fs-1">{{ number_format(0, 2) }} €</p>
+                                <p class="fs-5">?</p>
+                                <p class="fs-1">?</p>
                             </div>
                         </div>
     
                         <div class="col-md-3 mt-3">
                             <div class="card p-3 bg-danger text-light text-center">
-                                <p class="fs-5">Nombre d'unités occupées</p>
-                                <p class="fs-1">{{ $occupiedUnits }}</p>
+                                <p class="fs-5">?</p>
+                                <p class="fs-1">?</p>
                             </div>
                         </div>
     
@@ -97,17 +97,13 @@
                                                                 <td>Aucun locataire</td>
                                                             @endif
                                                             <td class="d-flex align-items-center">
-                                                                <form action="{{ route('properties.units_delete', $unit->id) }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('POST')
-                                                                    <button class="btn btn-danger me-2 p-1">Supprimer</button>
-                                                                </form>
-    
-    
+                                                                <button type="button" class="btn btn-danger p-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                                    Supprimer
+                                                                  </button>
+                                                        
                                                                 <a
                                                                     href="{{ route('properties.show_units', ['properties' => $building->id, 'id' => $unit->id]) }}">
-                                                                    <button class="btn btn-primary p-1">Voir</button>
+                                                                    <button class="btn btn-primary p-1 ms-1">Voir</button>
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -119,7 +115,28 @@
                                     </div>
                                 </div>
                             </div>
-    
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      Voulez-vous vraiment supprimer cet appartement ?
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <form action="{{ route('properties.units_delete', $unit->id) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('POST')
+                                        <button class="btn btn-danger me-2 p-1">Supprimer</button>
+                                    </form>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body">
@@ -265,7 +282,11 @@
                 </div>
             </div>
             <div id="tab3" class="tab-pane fade">
-               {{-- <div class="row">
+                @php
+                    $total = $payments->where('status', 'payé')->sum('amount');
+                    $totalEstimate = $payments->sum('amount'); 
+                @endphp
+               <div class="row">
                     <div class="col-md-6">
                         <div class="card p-3 bg-success text-light text-center">
                             <p class="fs-5">Montant total payé de l'immeuble</p>
@@ -278,7 +299,7 @@
                             <p class="fs-1">{{number_format($totalEstimate, 2) }}€</p>
                         </div>
                     </div>
-                </div> --}}
+                </div>
 
 
                 <div class="container-fluid mt-4">
@@ -300,7 +321,11 @@
                                                                                                         @if($payment->status == 'payé') table-success
                                                                                                             @else table-danger
                                                                                                         @endif">
-                                    <td>{{ $payment->tenant->firstName }} {{ $payment->tenant->lastName }}</td>
+                                    <td>
+                                    <a href="/properties/show/{{$building->id}}/units/{{ $payment->tenant->id}}/">
+                                            {{ $payment->tenant->firstName }} {{ $payment->tenant->lastName }}
+                                        </a> 
+                                    </td>
                                     <td>{{ $payment->unit->name }}</td>
                                     <td>{{ number_format($payment->amount, 2) }} €</td>
                                     <td>{{ ucfirst($payment->status) }}</td>
