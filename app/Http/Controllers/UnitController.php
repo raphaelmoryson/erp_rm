@@ -11,6 +11,7 @@ class UnitController extends Controller
     {
         $unit = Unit::findOrFail($id);
         $unit->tenant_id = $request->tenant_id;
+        $unit->status = "loué";
         $unit->save();
 
         return back()->with('success', 'Locataire attribué avec succès !');
@@ -20,7 +21,9 @@ class UnitController extends Controller
     {
         $unit = Unit::findOrFail($id);
         $unit->tenant_id = null;
+        $unit->status = "libre";
         $unit->save();
+
 
         return back()->with('success', 'Locataire désattribué avec succès !');
     }

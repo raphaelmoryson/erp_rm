@@ -1,24 +1,24 @@
 @extends('layouts.app')
-@section('title', "Appartement : ".$units->property->name)
+@section('title', "Appartement : " . $units->name)
 
 @section('content')
     <div>
         <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab"
-                    aria-controls="info" aria-selected="true" >
+                <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button"
+                    role="tab" aria-controls="info" aria-selected="true">
                     Information locataire
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link " id="juridique-tab" data-bs-toggle="tab" data-bs-target="#juridique" type="button"
-                    role="tab" aria-controls="juridique" aria-selected="false" >
+                    role="tab" aria-controls="juridique" aria-selected="false">
                     Fiche juridique
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link " id="compta-tab" data-bs-toggle="tab" data-bs-target="#compta" type="button"
-                    role="tab" aria-controls="compta" aria-selected="false" >
+                    role="tab" aria-controls="compta" aria-selected="false">
                     Fiche comptable
                 </button>
             </li>
@@ -42,7 +42,6 @@
                             <h3 class="mb-0">Détails de l'Appartement</h3>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">{{ $units->name }}</h5>
                             <p class="card-text"><strong>Type :</strong> {{ ucfirst($units->type) }}</p>
                             <p class="card-text"><strong>Superficie :</strong> {{ $units->area }} m²</p>
                             <p class="card-text"><strong>Étage :</strong> {{ $units->floor }}</p>
@@ -65,10 +64,8 @@
                                 <p><strong>Nom :</strong> {{ $units->tenant->firstName }} {{ $units->tenant->lastName }}</p>
                                 <p><strong>Email :</strong> {{ $units->tenant->email }}</p>
                                 <p><strong>Téléphone :</strong> {{ $units->tenant->mobile }}</p>
-                                <form action="{{ route('unit.remove_tenant', $units->id) }}" method="POST">
-                                    @csrf
-                                    <button class="btn btn-danger">Désattribuer ce locataire</button>
-                                </form>
+                                <button class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteUnitModal">Désattribuer ce locataire</button>
                             @else
                                 <p class="text-muted">Aucun locataire attribué</p>
                                 <form action="{{ route('unit.assign_tenant', $units->id) }}" method="POST">
@@ -89,7 +86,11 @@
                     </div>
                 </div>
             </div>
-            {{-- ONGLET 2 --}}
+
+            <x-confirmation-modal id="deleteUnitModal" title="Supprimer l'appartement"
+                message="Voulez-vous vraiment désattribuer ce locataire ?"
+                route="{{ route('unit.remove_tenant', $units->id) }}" method="POST" />
+
 
             <div class="tab-pane fade " id="compta" role="tabpanel" aria-labelledby="compta-tab">
                 <div class="container-fluid p-0 m-0" style="overflow-x: hidden">
@@ -99,6 +100,7 @@
                             <tr>
                                 <th scope="col">Nom de l'unité</th>
                                 <th scope="col">Montant</th>
+                                <th scope="col">Nom prénom</th>
                                 <th scope="col">Date de paiement</th>
                                 <th scope="col">Statut</th>
                             </tr>
@@ -108,6 +110,7 @@
                                 <tr>
                                     <td>{{ $payment->unit->name }}</td>
                                     <td>{{ number_format($payment->amount, 2) }} €</td>
+                                    <td>{{$payment->tenant->lastName}} {{$payment->tenant->firstName}}</td>
                                     <td>{{ $payment->created_at->format('d/m/Y') }}</td>
                                     <td>
                                         @if ($payment->status === 'payé')

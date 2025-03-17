@@ -159,7 +159,7 @@ class PropertiesController extends Controller
     {
         $tenants = Tenant::all();
         $units = Unit::where("id", $id)->where('property_id', $properties)->with('property', 'tenant')->first();
-        $allPayment = Payment::where('unit_id', $units->id)->get();
+        $allPayment = Payment::where('unit_id', $units->id)->with('tenant')->get();
         $monthPayment = Payment::where('unit_id', $units->id)
             ->where(function ($query) {
                 $query->whereMonth('created_at', '=', Carbon::now()->month);

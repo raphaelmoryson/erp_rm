@@ -138,32 +138,7 @@
                                 </div>
                               </div>
                             <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <p>Loyer non réglé</p>
-                                        </div>
-                                        <div style="height: 500px;overflow-y:scroll">
-                                            <table class="table table-sm">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">#</th>
-                                                        <th scope="col">Nom</th>
-                                                        <th scope="col">Montant</th>
-                                                        <th scope="col">Appart</th>
-    
-                                                        <th scope="col">Action</th>
-    
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr></tr>
-    
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
     
                         </div>

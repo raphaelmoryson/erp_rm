@@ -42,6 +42,11 @@
                     <x-heroicon-o-briefcase class="icon-navbar" />
                     <span>Entreprise</span>
                 </a>
+
+                <a href="{{ url('/invoice') }}" class="{{ Request::is('invoice') ? 'active' : '' }}">
+                    <x-heroicon-o-document-check class="icon-navbar" />
+                    <span>Facture</span>
+                </a>
                 <button class="toggle-sidebar" id="toggleSidebar"></button>
 
 
