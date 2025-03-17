@@ -172,114 +172,100 @@
                 </div>
             </div>
             <div id="tab2" class="tab-pane fade">
-                <div class=".container-fluid p-0 m-0 d-flex " style="overflow-x: hidden">
+                <div class="container-fluid p-0 m-0 d-flex">
+                    <!-- COLONNE GAUCHE : GESTION DES DOSSIERS -->
                     <div class="col-md-6">
-                        <form method="POST" action="{{ route('technical_folders.store', $building->id) }}">
+                        
+                        <!-- FORMULAIRE DE CRÉATION DE DOSSIER -->
+                        <form method="POST" action="{{ route('technical_folders.store', $building->id) }}" class="mb-3">
                             @csrf
-                            <div class="input-group mb-3">
-                                <input type="text" name="name" class="form-control" placeholder="Nom du dossier">
+                            <div class="input-group">
+                                <input type="text" name="name" class="form-control" placeholder="Nom du dossier" required>
                                 <button class="btn btn-success">Créer</button>
                             </div>
                         </form>
-
+                
                         <hr>
-                        <div class="accordion" id="technicalFolders">
-                            @foreach ($technicalFolders as $folder)
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <div class="d-flex">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#folder-{{ $folder->id }}">
-                                                {{ $folder->name }}
-
-                                            </button>
-
-                                            <form method="POST" action="{{ route('technical_folder.delete', $folder->id) }}">
+                
+                        <!-- TABLEAU DES DOSSIERS ET FICHIERS -->
+                        <table class="table table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Nom du Dossier</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($technicalFolders as $folder)
+                                    <tr class="table-primary">
+                                        <td colspan="2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <strong>{{ $folder->name }}</strong>
+                                                <form method="POST" action="{{ route('technical_folder.delete', $folder->id) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-sm">Supprimer</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td colspan="2">
+                                            <form method="POST" action="{{ route('technical_files.store', $folder->id) }}" enctype="multipart/form-data">
                                                 @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger btn-sm">Supprimer</button>
-                                            </form>
-                                        </div>
-
-                                    </h2>
-                                    <div id="folder-{{ $folder->id }}" class="accordion-collapse collapse ">
-
-                                        <div class="accordion-body">
-
-                                            <form method="POST" action="{{ route('technical_files.store', $folder->id) }}"
-                                                enctype="multipart/form-data">
-                                                @csrf
-                                                <div class="input-group mb-3">
-                                                    <input type="file" name="file" class="form-control">
+                                                <div class="input-group">
+                                                    <input type="file" name="file" class="form-control" required>
                                                     <button class="btn btn-primary">Uploader</button>
                                                 </div>
                                             </form>
-
-                                            <ul class="list-group">
-                                                @foreach ($folder->files as $file)
-                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                        <a href="{{ Storage::url($file->file_path) }}"
-                                                            target="_blank">{{ $file->file_name }}</a>
-                                                        <form method="POST"
-                                                            action="{{ route('technical_files.delete', $file->id) }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="btn btn-danger btn-sm">Supprimer</button>
-                                                        </form>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
+                                        </td>
+                                    </tr>
+                
+                                    @foreach ($folder->files as $file)
+                                        <tr id="row-{{ $file->id }}">
+                                            <td class="col-6">
+                                                <a href="{{ Storage::url($file->file_path) }}" target="_blank">{{ $file->file_name }}</a>
+                                            </td>
+                                            <td class="col-6 d-flex justify-content-end">
+                                                @if (Str::endsWith($file->file_name, '.pdf'))
+                                                    <button class="btn btn-info btn-sm me-2" onclick="showPdf('{{ Storage::url($file->file_path) }}')">PDF</button>
+                                                @endif
+                                                <form method="POST" action="{{ route('technical_files.delete', $file->id) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-sm">Supprimer</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-md-6 ms-3">
-                        <div class="card p-4 shadow-sm">
-                            <h4 class="mb-3">Demande de devis</h4>
-
-                            <form action="{{ route('report.store') }}" method="POST">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="unit_id" class="form-label">Lot concerné (optionnel)</label>
-                                    <select class="form-select" name="unit_id">
-                                        <option value="">Aucun, concerne l’immeuble entier</option>
-                                        @foreach ($units as $unit)
-                                            <option value="{{ $unit->id }}">{{ $unit->name }} ({{ $unit->type }})</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="company_id" class="form-label">Entreprise en charge</label>
-                                    <select class="form-select" name="company_id" required>
-                                        <option value="">Sélectionnez une entreprise</option>
-                                        @foreach ($companies as $company)
-                                            <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <!-- Détails du problème -->
-                                <div class="mb-3">
-                                    <label for="description" class="form-label">Détails du problème</label>
-                                    <textarea class="form-control" name="description" rows="3" required></textarea>
-                                </div>
-
-                                <!-- Photo -->
-                                <div class="mb-3">
-                                    <label for="photo" class="form-label">Photo (optionnel)</label>
-                                    <input type="file" class="form-control" name="photo">
-                                </div>
-
-                                <!-- Bouton Soumettre -->
-                                <button type="submit" class="btn btn-primary w-100">Signaler le problème</button>
-                            </form>
+                    <div class="col-md-6 vh-100" id="pdf-container" style="display: none; height: 700px;">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <strong>Prévisualisation PDF</strong>
+                            <button class="btn btn-warning btn-sm" onclick="hidePdf()">Fermer</button>
                         </div>
+                        <iframe id="pdf-iframe" src="" width="100%" height="800px" class="border"></iframe>
                     </div>
-
                 </div>
+                
+                <script>
+                    function showPdf(pdfUrl) {
+                        document.getElementById("pdf-container").style.display = "block";
+                        document.getElementById("pdf-iframe").src = pdfUrl;
+                    }
+                
+                    function hidePdf() {
+                        document.getElementById("pdf-container").style.display = "none";
+                        document.getElementById("pdf-iframe").src = "";
+                    }
+                </script>
+  
+                
             </div>
             <div id="tab3" class="tab-pane fade">
                 @php

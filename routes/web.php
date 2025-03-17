@@ -42,8 +42,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/technical_files/{folder}', [TechnicalFileController::class, 'store'])->name('technical_files.store');
     Route::delete('/technical_files/{file}', [TechnicalFileController::class, 'destroy'])->name('technical_files.delete');
     Route::delete('/technical_folders/{folder}', [TechnicalFolderController::class, 'destroy'])->name('technical_folder.delete');
-
-
     // TENANTS
 
     Route::get("/tenants", [TenantsController::class, "index"])->name('tenants');

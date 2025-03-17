@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Report;
 use App\Models\Property;
 use App\Models\Unit;
+use File;
 use App\Models\Company;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
@@ -16,11 +17,9 @@ class ReportController extends Controller
 {
     public function store(Request $request)
     {
+        $photo = $request->file('photo');
+        $photoPath = $photo->store('reports', 'public');
 
-        $photoPath = null;
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('reports', 'public');
-        }
         $random = Str::random(25);
 
         $report = Report::create([
@@ -37,7 +36,15 @@ class ReportController extends Controller
         $property = Properties::findOrFail(1);
         $unit = Unit::find($request->unit_id);
         $quoteLink = url('/report/' . $random);
-        Mail::to($company->email)->send(new RequestQuoteMail($company, $property, $unit, $request->description, $photoPath, $quoteLink));
+
+        Mail::to($company->email)->send(new RequestQuoteMail(
+            $company,
+            $property,
+            $unit,
+            $request->description,
+            $quoteLink
+        ));
+
 
         return redirect()->back()->with('success', 'Le problème a été signalé avec succès. Un email a été envoyé à l\'entreprise.');
     }
@@ -45,7 +52,7 @@ class ReportController extends Controller
     public function report_postfile($slug)
     {
         $report = Report::where('linkUrl', $slug)->with('property', 'unit', 'company')->first();
-        return view('page.report.show', ['report'=> $report]);
+        return view('page.report.show', ['report' => $report]);
         // return $report;
     }
 }

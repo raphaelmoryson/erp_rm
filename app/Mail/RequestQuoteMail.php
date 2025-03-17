@@ -15,19 +15,17 @@ class RequestQuoteMail extends Mailable
     public $property;
     public $unit;
     public $problem;
-    public $attachment;
     public $quoteLink;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($company, $property, $unit, $problem, $attachment, $quoteLink)
+    public function __construct($company, $property, $unit, $problem, $quoteLink)
     {
         $this->company = $company;
         $this->property = $property;
         $this->unit = $unit;
         $this->problem = $problem;
-        $this->attachment = $attachment;
         $this->quoteLink = $quoteLink;
     }
 
@@ -47,10 +45,7 @@ class RequestQuoteMail extends Mailable
                 'quoteLink' => $this->quoteLink,
             ]);
 
-        if ($this->attachment) {
-            $email->attach($this->attachment);
-        }
-
+       
         return $email;
     }
 }
