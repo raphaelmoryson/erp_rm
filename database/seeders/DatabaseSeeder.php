@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Invoice;
+use App\Models\InvoiceLine;
 use App\Models\Lease;
 use App\Models\LegalDocument;
 use App\Models\Maintenance;
@@ -60,7 +61,28 @@ class DatabaseSeeder extends Seeder
                 Tenant::factory(2)->create();
             });
         });
-        
+
+        $invoiceId = Invoice::create([
+            'tenant_id' => 1, 
+            'unit_id' => 1,
+            'amount' => 1200.00,
+            'qr_code' => null,
+            'due_date' => Carbon::now()->addMonth()->endOfMonth(),
+            'status' => 'en attente',
+            'name' => 'Loyer',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        InvoiceLine::create([
+            'invoice_id' => 1,
+            'description' => 'Loyer du mois',
+            'quantity' => 1,
+            'unit_price' => 1200.00,
+            'total' => 1200.00,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         
    
     }

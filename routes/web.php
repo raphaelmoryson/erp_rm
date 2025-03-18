@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PropertiesController;
@@ -59,10 +60,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get("/company", [CompanyController::class, "index"])->name('company');
 
     Route::post('/report/store', [ReportController::class, 'store'])->name('report.store');
+
+    // INVOICE
+
+    Route::get('/invoice', [InvoiceController::class,'index'])->name('invoice');
+    Route::get('/invoice/{id}/pdf', [InvoiceController::class, 'showPdf'])->name('invoice.pdf');
+
 });
 Route::get('/report/{slug}', [ReportController::class, 'report_postfile'])->name('report.post_file');
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::get('/login', [LoginController::class, 'index'])->name(' login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout']);
 

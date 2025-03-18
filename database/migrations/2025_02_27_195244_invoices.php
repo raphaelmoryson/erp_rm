@@ -8,11 +8,24 @@ return new class extends Migration {
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lease_id')->constrained('leases')->onDelete('cascade'); // Lien avec le bail
-            $table->decimal('amount', 10, 2); // Montant de la facture
-            $table->string('qr_code')->nullable(); // QR Swiss Bill
-            $table->date('due_date'); // Date limite de paiement
+            $table->foreignId('tenant_id')->constrained('tenants')->onDelete('cascade'); // Lien avec le locataire
+            $table->foreignId('unit_id')->constrained('units')->onDelete('cascade'); // Lien avec l'appartement
+            $table->decimal('amount', 10, 2); // Montant total de la facture
+            $table->string('qr_code')->nullable();
+            $table->string('name')->nullable();
+            $table->date('due_date'); 
             $table->enum('status', ['payée', 'en attente', 'impayée'])->default('en attente');
+            $table->timestamps();
+        });
+
+        // Table des lignes de facture
+        Schema::create('invoice_lines', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('invoice_id')->constrained('invoices')->onDelete('cascade');
+            $table->string('description');
+            $table->integer('quantity')->default(1);
+            $table->decimal('unit_price', 10, 2);
+            $table->decimal('total', 10, 2);
             $table->timestamps();
         });
     }
@@ -20,5 +33,6 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('invoices');
+        Schema::dropIfExists('invoice_lines');
     }
 };

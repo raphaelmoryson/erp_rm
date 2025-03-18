@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,15 +10,28 @@ class Invoice extends Model
     use HasFactory;
 
     protected $fillable = [
-        'lease_id',
+        'tenant_id',
+        'unit_id',
+        'name',
         'amount',
         'qr_code',
         'due_date',
         'status',
     ];
 
-    public function lease()
+
+    public function tenant()
     {
-        return $this->belongsTo(Lease::class);
+        return $this->belongsTo(Tenant::class);
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
+    public function invoiceLines()
+    {
+        return $this->hasMany(InvoiceLine::class);
     }
 }
