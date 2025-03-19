@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\Payment;
 use App\Models\Properties;
+use App\Models\Report;
 use App\Models\TechnicalFolder;
 use App\Models\Tenant;
 use App\Models\Unit;
@@ -74,20 +75,24 @@ class PropertiesController extends Controller
         $building = Properties::findOrFail($id);
         $companies = Company::all();
         $units = Unit::where('property_id', $id)->with('tenant')->get();
-        
-        $maxUnits = $building->max_units ?: 1;
-        $occupancyRate = (count($units) / $maxUnits) * 100;
-    
+
         $technicalFolders = TechnicalFolder::where('property_id', $id)->with('files')->get();
         $unitIds = $units->pluck('id');
         $occupiedUnits = $units->whereNotNull('tenant_id')->count();
         $payments = Payment::whereIn('unit_id', $unitIds)->with('tenant', 'unit')->orderBy('due_date')->get();
-    
+
+        $reports = Report::where('property_id', $id)->with('unit', 'company')->latest()->get();
         return view('page.properties.edit-properties', compact(
-            'companies', 'units', 'building', 'occupancyRate', 'technicalFolders', 'payments', 'occupiedUnits'
+            'companies',
+            'units',
+            'building',
+            'technicalFolders',
+            'payments',
+            'occupiedUnits',
+            'reports'
         ));
     }
-    
+
     public function tenants_add($id)
     {
         $building = Properties::where("id", $id)->first();

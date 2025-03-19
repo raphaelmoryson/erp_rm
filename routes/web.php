@@ -58,8 +58,11 @@ Route::group(['middleware' => ['auth']], function () {
     // ENTREPRISE LISTE 
 
     Route::get("/company", [CompanyController::class, "index"])->name('company');
-
+    
+    // REPORT
     Route::post('/report/store', [ReportController::class, 'store'])->name('report.store');
+    Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
+
 
     // INVOICE
 
@@ -68,8 +71,9 @@ Route::group(['middleware' => ['auth']], function () {
 
 });
 Route::get('/report/{slug}', [ReportController::class, 'report_postfile'])->name('report.post_file');
+Route::post('/report/{slug}', [ReportController::class, 'post'])->name('report.post_file_request');
 
-Route::get('/login', [LoginController::class, 'index'])->name(' login');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout']);
 

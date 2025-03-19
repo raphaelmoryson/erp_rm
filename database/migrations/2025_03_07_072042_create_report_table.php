@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('photo')->nullable();
             $table->string('linkUrl')->nullable();
             $table->string('fileQuote')->nullable();
-            $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'in_progress', 'completed', 'refused', 'abandoned'])->default('pending');
             $table->timestamps();
         });
     }

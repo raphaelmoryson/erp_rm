@@ -52,7 +52,34 @@ class ReportController extends Controller
     public function report_postfile($slug)
     {
         $report = Report::where('linkUrl', $slug)->with('property', 'unit', 'company')->first();
-        return view('page.report.show', ['report' => $report]);
+        if ($report) {
+            return view('page.report.report', ['report' => $report]);
+        } else {
+            return abort(404);
+        }
+        // return $report;
+    }
+
+
+    public function post(Request $request, $slug)
+    {
+        $file = $request->file('fileQuote');
+        $path = $file->store('reports_file', 'public');
+
+        $report = Report::where('linkUrl', $slug)->update([
+            'linkUrl' => null,
+            'fileQuote' => $path,
+            'status' => 'in_progress',
+        ]);
+
+        return redirect()->back()->with('success', '');
+
+    }
+
+    public function show($id)
+    {
+        $report = Report::with('company', 'property', 'unit')->findOrFail($id);
+        return view('page.report.show', compact('report'));
         // return $report;
     }
 }

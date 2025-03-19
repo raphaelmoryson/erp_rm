@@ -37,7 +37,6 @@ class InvoiceController extends Controller
 
         $pdf->writeHTML($html, true, false, true, false, '');
 
-        // Output the PDF
         return response($pdf->Output('facture-' . $invoice->id . '.pdf', 'I'))->header('Content-Type', 'application/pdf');
     }
 }

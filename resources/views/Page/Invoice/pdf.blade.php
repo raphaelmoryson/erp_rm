@@ -1,138 +1,190 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Facture #{{ $invoice->id }}</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            font-family: 'Arial', sans-serif;
+            font-size: 10px;
             color: #333;
         }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
         .container {
             width: 100%;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
+            margin: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fff;
+            position: relative;
         }
+
         .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .header img {
-            max-width: 120px;
-        }
-        .header h1 {
-            font-size: 28px;
-            font-weight: bold;
-            margin-top: 10px;
-            color: #2C3E50;
-        }
-        .invoice-info {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            align-items: center;
+            border-bottom: 2px solid #093B69;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
         }
-        .invoice-info div {
-            width: 45%;
+
+        .header img {
+            max-height: 35px;
         }
-        .invoice-info p {
-            margin: 5px 0;
+
+        .header h1 {
+            font-size: 16px;
+            color: #093B69;
         }
-        .details {
-            margin-top: 20px;
+
+        .invoice-info {
+            margin-bottom: 10px;
         }
+
         .table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-bottom: 10px;
         }
-        .table th, .table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        .table th {
-            background-color: #f2f2f2;
-            color: #333;
-        }
+
+        .table th,
         .table td {
-            font-size: 14px;
+            border: 1px solid #ddd;
+            padding: 4px;
+            text-align: left;
+            word-wrap: break-word;
         }
-        .total {
-            font-size: 18px;
+
+        .table th {
+            background-color: #093B69;
+            color: white;
             font-weight: bold;
-            text-align: right;
-            margin-top: 20px;
         }
+
+        .total-container {
+            width: 40%;
+            float: right;
+            margin-left: 10px;
+            padding-bottom: 10px;
+        }
+
+        .total-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .total-container table td {
+            border: 1px solid #ddd;
+            padding: 4px;
+            word-wrap: break-word;
+            text-align: right;
+        }
+
+        .total-container table tr:last-child td {
+            font-weight: bold;
+            background-color: #093B69;
+            color: white;
+            padding: 4px;
+        }
+
+        .payment-info {
+            clear: both;
+            padding: 8px;
+            border: 1px solid #093B69;
+            background-color: #eef3f7;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
         .footer {
             text-align: center;
-            margin-top: 40px;
-            font-size: 12px;
+            font-size: 9px;
+            color: #555;
+            margin-top: 10px;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <!-- Header with logo and invoice title -->
         <div class="header">
-            <img height="50" width="200" src="/images/logo.png" alt="Logo">
+            <img height="50" width="90" src="/images/logo2.png" alt="Logo">
             <h1>Facture #{{ $invoice->id }}</h1>
         </div>
 
-        <!-- Invoice Information -->
         <div class="invoice-info">
-            <div>
-                <p><strong>Locataire:</strong> {{ $invoice->tenant->firstName }} {{ $invoice->tenant->lastName }}</p>
-                <p><strong>Appartement:</strong> {{ $invoice->unit->name }}</p>
-                <p><strong>Montant:</strong> {{ number_format($invoice->amount, 2) }}€</p>
-                <p><strong>Date d'échéance:</strong> {{ $invoice->due_date }}</p>
-            </div>
-            <div>
-                <p><strong>Adresse:</strong> {{ $invoice->tenant->address }}</p>
-                <p><strong>Email:</strong> {{ $invoice->tenant->email }}</p>
-                <p><strong>Téléphone:</strong> {{ $invoice->tenant->phone }}</p>
-                <p><strong>Date d'émission:</strong> {{ $invoice->created_at->format('d/m/Y') }}</p>
-            </div>
+            <p><strong>Locataire :</strong> {{ $invoice->tenant->firstName }} {{ $invoice->tenant->lastName }}</p>
+            <p><strong>Appartement :</strong> {{ $invoice->unit->name }}</p>
+            <p><strong>Date d'échéance :</strong> {{ $invoice->due_date }}</p>
+            <p><strong>Email :</strong> {{ $invoice->tenant->email }}</p>
         </div>
 
-        <!-- Invoice Details Table -->
-        <div class="details">
-            <table class="table">
-                <thead>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th><strong>Libellé</strong></th>
+                    <th><strong>Quantité</strong></th>
+                    <th><strong>Prix Unitaire</strong></th>
+                    <th><strong>Total HT</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $subtotal = 0;
+                @endphp
+                @foreach($invoice->invoiceLines as $line)
+                    @php
+                        $subtotal += $line->total;
+                    @endphp
                     <tr>
-                        <th>Libellé</th>
-                        <th>Quantité</th>
-                        <th>Prix Unitaire</th>
-                        <th>Total</th>
+                        <td>{{ $line->description }}</td>
+                        <td>{{ $line->quantity }}</td>
+                        <td>{{ number_format($line->unit_price, 2) }}€</td>
+                        <td>{{ number_format($line->total, 2) }}€</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach($invoice->invoiceLines as $line)
-                        <tr>
-                            <td>{{ $line->description }}</td>
-                            <td>{{ $line->quantity }}</td>
-                            <td>{{ number_format($line->unit_price, 2) }}€</td>
-                            <td>{{ number_format($line->total_price, 2) }}€</td>
-                        </tr>
-                    @endforeach
-                </tbody>
+                @endforeach
+            </tbody>
+        </table>
+
+        <div class="test"></div>
+        <div class="total-container">
+            <table>
+                <tr>
+                    <td>Sous-total HT :</td>
+                    <td>{{ number_format($subtotal, 2) }}€</td>
+                </tr>
+                <tr>
+                    <td>TVA (20%) :</td>
+                    <td>{{ number_format($subtotal * 0.20, 2) }}€</td>
+                </tr>
+                <tr>
+                    <td>Total TTC :</td>
+                    <td><strong>{{ number_format($subtotal * 1.20, 2) }}€</strong></td>
+                </tr>
             </table>
         </div>
 
-        <!-- Total Amount -->
-        <div class="total">
-            <p><strong>Total à payer: {{ number_format($invoice->amount, 2) }}€</strong></p>
+        <!-- Informations de paiement -->
+        <div class="payment-info">
+            <p><strong>Informations de paiement :</strong></p>
+            <p>Veuillez effectuer le paiement sur le compte suivant :</p>
+            <p><strong>Banque :</strong> Nom de la banque</p>
+            <p><strong>IBAN :</strong> FR76 1234 5678 9012 3456 7890 189</p>
+            <p><strong>BIC :</strong> ABCDFRPP</p>
         </div>
 
-        <!-- Footer with notes -->
+        <!-- Pied de page -->
         <div class="footer">
-            <p>Merci pour votre paiement!</p>
-            <p>Pour toute question, veuillez nous contacter par email à info@votreentreprise.com.</p>
+            <p>Merci pour votre paiement !</p>
+            <p>Pour toute question, contactez-nous à info@votreentreprise.com</p>
         </div>
     </div>
 </body>
+
 </html>
