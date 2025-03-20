@@ -33,4 +33,10 @@ class Report extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function reportLines()
+    {
+        return $this->hasMany(ReportLine::class, 'report_id', 'id'); // Correction ici
+    }
 }
+

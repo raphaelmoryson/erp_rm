@@ -15,14 +15,23 @@ return new class extends Migration {
             $table->text('description');
             $table->string('photo')->nullable();
             $table->string('linkUrl')->nullable();
-            $table->string('fileQuote')->nullable();
             $table->enum('status', ['pending', 'in_progress', 'completed', 'refused', 'abandoned'])->default('pending');
+            $table->timestamps();
+        });
+
+        Schema::create('report_lines', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('report_id')->constrained()->onDelete('cascade');
+            $table->enum('type', ['progress', 'document'])->default('progress');
+            $table->text('detail')->nullable();
+            $table->string('file_path')->nullable();
             $table->timestamps();
         });
     }
 
     public function down()
     {
+        Schema::dropIfExists('report_lines');
         Schema::dropIfExists('reports');
     }
 };

@@ -9,6 +9,7 @@ return new class extends Migration {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tenant_id')->constrained('tenants')->onDelete('cascade');
+            $table->foreignId('invoice_id')->constrained('invoices')->onDelete('cascade');
             $table->foreignId('unit_id')->constrained('units')->onDelete('cascade');
             $table->decimal('amount', 10, 2); // Montant du paiement
             $table->enum('status', ['en attente', 'payé', 'retard', 'annulé'])->default('en attente');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Properties;
+use App\Models\ReportLine;
 use Illuminate\Http\Request;
 use App\Models\Report;
 use App\Models\Property;
@@ -65,20 +66,32 @@ class ReportController extends Controller
     {
         $file = $request->file('fileQuote');
         $path = $file->store('reports_file', 'public');
-
-        $report = Report::where('linkUrl', $slug)->update([
+    
+        $report = Report::where('linkUrl', $slug)->firstOrFail();
+        $report->update([
             'linkUrl' => null,
-            'fileQuote' => $path,
             'status' => 'in_progress',
         ]);
-
-        return redirect()->back()->with('success', '');
-
+    
+        // Création de la ligne d'historique avec message d'acceptation
+        ReportLine::create([
+            'report_id' => $report->id,
+            'type' => 'progress',
+            'detail' => "Acceptation de l'intervention par l'entreprise {$report->company->name} et devis déposé.",
+        ]);
+    
+        ReportLine::create([
+            'report_id' => $report->id,
+            'type' => 'document',
+            'file_path' => $path,
+        ]);
+    
+        return redirect("/")->with('success', 'Intervention acceptée et devis déposé.');
     }
 
     public function show($id)
     {
-        $report = Report::with('company', 'property', 'unit')->findOrFail($id);
+        $report = Report::with('company', 'property', 'unit','reportLines')->findOrFail($id);
         return view('page.report.show', compact('report'));
         // return $report;
     }

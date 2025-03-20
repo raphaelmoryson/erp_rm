@@ -28,10 +28,10 @@
                         <h5><i class="fas fa-building"></i> Informations de l'immeuble</h5>
                     </div>
                     <div class="card-body">
-                        <p><strong>Nom de la propriété :</strong> {{$report->property->name}}</p>
-                        <p><strong>Adresse :</strong> {{$report->property->address}}, {{$report->property->city}},
-                            {{$report->property->zip_code}}</p>
-                        <p><strong>Étage :</strong> {{$report->unit->floor}}</p>
+                        <p><strong>Nom de la propriété :</strong> {{ $report->property->name }}</p>
+                        <p><strong>Adresse :</strong> {{ $report->property->address }}, {{ $report->property->city }},
+                            {{ $report->property->zip_code }}</p>
+                        <p><strong>Étage :</strong> {{ $report->unit->floor }}</p>
                     </div>
                 </div>
             </div>
@@ -42,11 +42,11 @@
                         <h5><i class="fas fa-user"></i> Vos Informations</h5>
                     </div>
                     <div class="card-body">
-                        <p><strong>Nom :</strong> {{ $report->company->name}}</p>
-                        <p><strong>Email :</strong> {{$report->company->email}}</p>
-                        <p><strong>Téléphone :</strong> {{$report->company->phone}}</p>
-                        <p><strong>Ville :</strong> {{ $report->company->city}}</p>
-                        <p><strong>SIREN :</strong> {{ $report->company->siren}}</p>
+                        <p><strong>Nom :</strong> {{ $report->company->name }}</p>
+                        <p><strong>Email :</strong> {{ $report->company->email }}</p>
+                        <p><strong>Téléphone :</strong> {{ $report->company->phone }}</p>
+                        <p><strong>Ville :</strong> {{ $report->company->city }}</p>
+                        <p><strong>SIREN :</strong> {{ $report->company->siren }}</p>
                     </div>
                 </div>
             </div>
@@ -62,8 +62,7 @@
                             <div class="mb-3">
                                 <label for="description" class="form-label"><i class="fas fa-pencil-alt"></i>
                                     Description du devis</label>
-                                <textarea class="form-control" id="description" name="description" rows="3"
-                                    required></textarea>
+                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="photo" class="form-label"><i class="fas fa-paperclip"></i> Joindre un
@@ -79,7 +78,7 @@
         </div>
 
         <!-- CARROUSEL DES IMAGES -->
-        @if($report->photo)
+        @if ($report->photo)
             <div class="card h-100 me-2 shadow-sm mt-3">
                 <div class="card-header bg-danger text-white">
                     <h5><i class="fas fa-file-alt"></i> Photo : </h5>
@@ -90,7 +89,6 @@
 
                 </div>
             </div>
-
         @endif
 
     </div>

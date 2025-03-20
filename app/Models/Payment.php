@@ -8,7 +8,7 @@ class Payment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tenant_id', 'unit_id', 'amount', 'status', 'due_date', 'paid_at', 'payment_method'];
+    protected $fillable = ['tenant_id', 'invoice_id', 'unit_id', 'amount', 'status', 'due_date', 'paid_at', 'payment_method'];
 
     public function tenant()
     {
@@ -18,5 +18,10 @@ class Payment extends Model
     public function unit()
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
     }
 }

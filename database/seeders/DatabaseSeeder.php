@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'manager',
         ]);
 
-   
+
         Properties::factory(1)->create()->each(function ($property) {
             $units = Unit::factory(5)->create(['property_id' => $property->id]);
             $units->each(function ($unit) {
@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
         });
 
         $invoiceId = Invoice::create([
-            'tenant_id' => 1, 
+            'tenant_id' => 1,
             'unit_id' => 1,
             'amount' => 1200.00,
             'qr_code' => null,
@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        
-   
+
+
     }
 }

@@ -2,11 +2,15 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Invoice;
+use App\Models\InvoiceLine;
 use App\Models\Payment;
 use App\Models\Tenant;
 use App\Models\Unit;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InvoiceMail;
 
 class PaymentsCron extends Command
 {
@@ -15,41 +19,68 @@ class PaymentsCron extends Command
      *
      * @var string
      */
-    protected $signature = 'test:cron';
+    protected $signature = 'payments:generate_and_send';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Génère les paiements et envoie les factures aux locataires';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        \Log::info('Cron job started');
+        \Log::info('Début du cron de génération des paiements');
         $units = Unit::where('status', 'loué')->get();
         \Log::info('Nombre d\'unités trouvées : ' . $units->count());
 
         foreach ($units as $unit) {
             try {
-                Payment::create([
+                // Création de la facture
+                $invoice = Invoice::create([
                     'tenant_id' => $unit->tenant_id,
                     'unit_id' => $unit->id,
                     'due_date' => Carbon::now()->endOfMonth(),
                     'amount' => $unit->initial_rent_price,
                     'status' => 'en attente',
                 ]);
-                \Log::info('Paiement créé pour le locataire ID : ' . $unit->tenant_id);
+
+                // Ajout de la ligne de facture
+                InvoiceLine::create([
+                    'invoice_id' => $invoice->id,
+                    'description' => 'Loyer du mois de ' . Carbon::now()->translatedFormat('F Y'),
+                    'quantity' => 1,
+                    'unit_price' => $unit->initial_rent_price,
+                    'total' => $unit->initial_rent_price,
+                ]);
+
+                // Création du paiement
+                Payment::create([
+                    'invoice_id' => $invoice->id,
+                    'tenant_id' => $unit->tenant_id,
+                    'unit_id' => $unit->id,
+                    'due_date' => Carbon::now()->endOfMonth(),
+                    'amount' => $unit->initial_rent_price,
+                    'status' => 'en attente',
+                ]);
+
+                $tenant = Tenant::find($unit->tenant_id);
+                if ($tenant && $tenant->email) {
+                    Mail::to($tenant->email)->send(new InvoiceMail($invoice));
+                    \Log::info("Facture envoyée à {$tenant->email}");
+                } else {
+                    \Log::warning("Aucun email trouvé pour le locataire ID: {$unit->tenant_id}");
+                }
+
+                \Log::info('Paiement et facture créés pour le locataire ID : ' . $unit->tenant_id);
             } catch (\Exception $e) {
-                \Log::error('Erreur lors de la création du paiement : ' . $e->getMessage());
+                \Log::error('Erreur lors de la création du paiement ou de l\'envoi du mail : ' . $e->getMessage());
             }
         }
-        
 
-        \Log::info('Cron job completed');
+        \Log::info('Cron terminé avec succès');
     }
-
 }

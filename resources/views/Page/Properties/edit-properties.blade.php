@@ -320,6 +320,7 @@
                                 <th>Date limite</th>
                                 <th>Paiement</th>
                                 <th>Actions</th>
+                                <th>Facture</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -351,6 +352,8 @@
                                             <span class="text-muted">✔ Déjà payé</span>
                                         @endif
                                     </td>
+                                    <td><a class="btn btn-primary" href="{{route('invoice.pdf', $payment->invoice_id)}}">Voir</a></td>
+
                                 </tr>
                             @endforeach
                         </tbody>
