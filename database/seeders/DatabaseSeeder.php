@@ -62,27 +62,27 @@ class DatabaseSeeder extends Seeder
             });
         });
 
-        $invoiceId = Invoice::create([
-            'tenant_id' => 1,
-            'unit_id' => 1,
-            'amount' => 1200.00,
-            'qr_code' => null,
-            'due_date' => Carbon::now()->addMonth()->endOfMonth(),
-            'status' => 'en attente',
-            'name' => 'Loyer',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // $invoiceId = Invoice::create([
+        //     'tenant_id' => 1,
+        //     'unit_id' => 1,
+        //     'amount' => 1200.00,
+        //     'qr_code' => null,
+        //     'due_date' => Carbon::now()->addMonth()->endOfMonth(),
+        //     'status' => 'en attente',
+        //     'name' => 'Loyer',
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
 
-        InvoiceLine::create([
-            'invoice_id' => 1,
-            'description' => 'Loyer du mois',
-            'quantity' => 1,
-            'unit_price' => 1200.00,
-            'total' => 1200.00,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // InvoiceLine::create([
+        //     'invoice_id' => 1,
+        //     'description' => 'Loyer du mois',
+        //     'quantity' => 1,
+        //     'unit_price' => 1200.00,
+        //     'total' => 1200.00,
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
 
 
     }

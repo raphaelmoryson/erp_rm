@@ -352,7 +352,8 @@
                                             <span class="text-muted">✔ Déjà payé</span>
                                         @endif
                                     </td>
-                                    <td><a class="btn btn-primary" href="{{route('invoice.pdf', $payment->invoice_id)}}">Voir</a></td>
+                                    <td><a class="btn btn-primary"
+                                            href="{{ route('invoice.pdf', $payment->invoice_id) }}">Voir</a></td>
 
                                 </tr>
                             @endforeach
@@ -361,51 +362,49 @@
                 </div>
             </div>
             <div id="tab4" class="tab-pane fade">
-                <div class="container-fluid">
+                <div class="container-fluid ">
+                    <div class="mt-3"></div>
+                    <h4 class="mb-3">Demande de devis</h4>
 
-                    <div class="card p-4 shadow-sm">
-                        <h4 class="mb-3">Demande de devis</h4>
+                    <form action="{{ route('report.store') }}" method="POST" enctype="multipart/form-data">
 
-                        <form action="{{ route('report.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="unit_id" class="form-label">Lot concerné (optionnel)</label>
+                            <select class="form-select" name="unit_id">
+                                <option value="">Aucun, concerne l’immeuble entier</option>
+                                @foreach ($units as $unit)
+                                    <option value="{{ $unit->id }}">{{ $unit->name }} ({{ $unit->type }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                            @csrf
-                            <div class="mb-3">
-                                <label for="unit_id" class="form-label">Lot concerné (optionnel)</label>
-                                <select class="form-select" name="unit_id">
-                                    <option value="">Aucun, concerne l’immeuble entier</option>
-                                    @foreach ($units as $unit)
-                                        <option value="{{ $unit->id }}">{{ $unit->name }} ({{ $unit->type }})
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="mb-3">
+                            <label for="company_id" class="form-label">Entreprise en charge</label>
+                            <select class="form-select" name="company_id" required>
+                                <option value="">Sélectionnez une entreprise</option>
+                                @foreach ($companies as $company)
+                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                            <div class="mb-3">
-                                <label for="company_id" class="form-label">Entreprise en charge</label>
-                                <select class="form-select" name="company_id" required>
-                                    <option value="">Sélectionnez une entreprise</option>
-                                    @foreach ($companies as $company)
-                                        <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <!-- Détails du problème -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Détails du problème</label>
+                            <textarea class="form-control" name="description" rows="3" required></textarea>
+                        </div>
 
-                            <!-- Détails du problème -->
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Détails du problème</label>
-                                <textarea class="form-control" name="description" rows="3" required></textarea>
-                            </div>
+                        <!-- Photo -->
+                        <div class="mb-3">
+                            <label for="photo" class="form-label">Photo (optionnel)</label>
+                            <input type="file" class="form-control" name="photo">
+                        </div>
 
-                            <!-- Photo -->
-                            <div class="mb-3">
-                                <label for="photo" class="form-label">Photo (optionnel)</label>
-                                <input type="file" class="form-control" name="photo">
-                            </div>
-
-                            <!-- Bouton Soumettre -->
-                            <button type="submit" class="btn btn-primary w-100">Signaler le problème</button>
-                        </form>
-                    </div>
+                        <!-- Bouton Soumettre -->
+                        <button type="submit" class="btn btn-primary w-100">Signaler le problème</button>
+                    </form>
                 </div>
             </div>
         </div>

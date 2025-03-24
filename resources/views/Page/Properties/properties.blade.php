@@ -9,12 +9,15 @@
             <div class="col-md-8">
                 <div class="properties-container">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="input-group">
-                            <input type="search" class="form-control rounded" placeholder="Chercher un immeuble"
-                                aria-label="Search" aria-describedby="search-addon" />
-                            <button type="button" class="btn bg-primary text-light" data-mdb-rippe-init>Rechercher</button>
-                        </div>
+                        <form method="GET" action="{{ url('/properties') }}" class="w-100">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control rounded"
+                                    placeholder="Chercher un immeuble" value="{{ request('search') }}">
+                                <button type="submit" class="btn bg-primary text-light">Rechercher</button>
+                            </div>
+                        </form>
                     </div>
+
                     <table class="table table-striped table-hover">
                         <thead class="table-immoFlow">
                             <tr>
@@ -27,15 +30,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($properties as $index => $property)
+                            @foreach ($properties as $index => $property)
                                 <tr>
-                                    <th scope="row">{{ $index + 1 }}</th>
-                                    <td>{{ $property['name'] }}</td>
-                                    <td>{{ $property['address'] }}</td>
-                                    <td>{{ $property['zip_code'] }}</td>
-                                    <td>{{ $property['city'] }}</td>
+                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td>{{ $property->name }}</td>
+                                    <td>{{ $property->address }}</td>
+                                    <td>{{ $property->zip_code }}</td>
+                                    <td>{{ $property->city }}</td>
                                     <td>
-                                        <a href="{{ url('properties/edit/' . $property['id']) }}"
+                                        <a href="{{ url('properties/edit/' . $property->id) }}"
                                             class="btn btn-primary btn-sm">
                                             Voir Détails
                                         </a>
@@ -45,7 +48,11 @@
                         </tbody>
                     </table>
 
+                    <div class="d-flex justify-content-center w-100">
+                        {{ $properties->links() }}
+                    </div>
                 </div>
+
             </div>
 
             <div class="col-md-2">
@@ -59,7 +66,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             var map = L.map('map').setView([46.20813364904721, 6.155216646162519], 9);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -89,7 +96,7 @@
                 popupAnchor: [0, -32]
             });
 
-            @foreach($properties as $property)
+            @foreach ($properties as $property)
                 var icon;
                 var latitude = "{{ $property->latitude }}";
                 var longitude = "{{ $property->longitude }}";
@@ -105,12 +112,13 @@
                     icon = L.marker();
                 }
 
-                L.marker([latitude, longitude], { icon: icon })
+                L.marker([latitude, longitude], {
+                        icon: icon
+                    })
                     .addTo(map)
                     .bindPopup("<b>{{ $property->name }}</b><br>{{ $property->address }}");
             @endforeach
         });
-
     </script>
 
 

@@ -10,11 +10,26 @@ use TCPDF;
 
 class InvoiceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::with('tenant', 'unit')->get();
-        return view('page.invoice.show', ['invoices' => $invoices]);
+        $query = Invoice::with('tenant', 'unit');
+    
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'LIKE', "%$search%")
+                  ->orWhereHas('tenant', function ($q) use ($search) {
+                      $q->where('lastName', 'LIKE', "%$search%")
+                        ->orWhere('firstName', 'LIKE', "%$search%")
+                        ->orWhere('amount', 'LIKE', "%$search%");
+                  })
+                  ->orWhere('amount', 'LIKE', "%$search%");
+        }
+    
+        $invoices = $query->paginate(10)->appends(['search' => $request->search]);
+    
+        return view('page.invoice.show', compact('invoices'));
     }
+    
     public function showPdf($id)
     {
         $invoice = Invoice::with('tenant', 'unit', 'invoiceLines')->findOrFail($id);

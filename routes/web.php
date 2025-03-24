@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PaymentController;
@@ -58,7 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
     // ENTREPRISE LISTE 
 
     Route::get("/company", [CompanyController::class, "index"])->name('company');
-    
+
     // REPORT
     Route::post('/report/store', [ReportController::class, 'store'])->name('report.store');
     Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
@@ -66,8 +67,14 @@ Route::group(['middleware' => ['auth']], function () {
 
     // INVOICE
 
-    Route::get('/invoice', [InvoiceController::class,'index'])->name('invoice');
+    Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoices.index');
     Route::get('/invoice/{id}/pdf', [InvoiceController::class, 'showPdf'])->name('invoice.pdf');
+
+    // INVENTORY / ETAT DES LIEUX
+
+    Route::post('/inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
+    Route::get('/inventory/pdf/{id}', [InventoryController::class, 'generatePDF'])->name('inventory.pdf');
+
 
 });
 Route::get('/report/{slug}', [ReportController::class, 'report_postfile'])->name('report.post_file');

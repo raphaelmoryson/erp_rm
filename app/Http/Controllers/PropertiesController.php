@@ -17,11 +17,22 @@ use Illuminate\Support\Facades\Http;
 
 class PropertiesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $properties = Properties::all();
-        return view('page.properties.properties', ['properties' => $properties]);
+        $query = Properties::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'LIKE', "%$search%")
+                ->orWhere('address', 'LIKE', "%$search%")
+                ->orWhere('city', 'LIKE', "%$search%");
+        }
+
+        $properties = $query->paginate(10)->appends(['search' => $request->search]);
+
+        return view('page.properties.properties', compact('properties'));
     }
+
 
     public function create()
     {
@@ -171,8 +182,17 @@ class PropertiesController extends Controller
             })
             ->first();
 
-        // return $monthPayment;
-        return view('page.properties.units.show', ["units" => $units, 'tenants' => $tenants, 'allPayment' => $allPayment, 'monthPayment' => $monthPayment]);
+
+
+        $unitsList = Unit::where('property_id', $properties)->get();
+
+        return view('page.properties.units.show', [
+            "units" => $units,
+            'tenants' => $tenants,
+            'allPayment' => $allPayment,
+            'monthPayment' => $monthPayment,
+            'unitsList' => $unitsList
+        ]);
     }
 
 }
