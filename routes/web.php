@@ -7,6 +7,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PropertiesController;
+use App\Http\Controllers\QrBillController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TechnicalFileController;
@@ -53,6 +54,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('/tenants/store', [TenantsController::class, 'store'])->name('tenants.store');
 
+    // PAYMENTS
+
     Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
     Route::post('/payments/{id}/mark-as-paid', [PaymentController::class, 'markAsPaid'])->name('payments.markAsPaid');
 
@@ -62,6 +65,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // REPORT
     Route::post('/report/store', [ReportController::class, 'store'])->name('report.store');
+    Route::post('/reports/{id}/toggle', [ReportController::class, 'toggleStatus'])->name('reports.toggle');
     Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
 
 
@@ -75,10 +79,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
     Route::get('/inventory/pdf/{id}', [InventoryController::class, 'generatePDF'])->name('inventory.pdf');
 
-
+    Route::get('/facture-qr', [QrBillController::class, 'generateQrBill']);
+    
 });
 Route::get('/report/{slug}', [ReportController::class, 'report_postfile'])->name('report.post_file');
-Route::post('/report/{slug}', [ReportController::class, 'post'])->name('report.post_file_request');
+Route::post('/report/{slug}/accepted', [ReportController::class, 'post_accepted'])->name('report.accepted');
+Route::post('/report/{slug}/refused', [ReportController::class, 'post_refused'])->name('report.refused');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);

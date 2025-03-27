@@ -57,12 +57,13 @@
                         <h5><i class="fas fa-file-alt"></i> Soumettre un Devis</h5>
                     </div>
                     <div class="card-body">
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('report.accepted', $slug) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
                                 <label for="description" class="form-label"><i class="fas fa-pencil-alt"></i>
                                     Description du devis</label>
-                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="photo" class="form-label"><i class="fas fa-paperclip"></i> Joindre un
@@ -72,10 +73,19 @@
                             <button type="submit" class="btn btn-success w-100"><i class="fas fa-check-circle"></i>
                                 Soumettre le devis</button>
                         </form>
+
+
+
+                        <button data-bs-toggle="modal" data-bs-target="#refusedReportModal" type="button"
+                            class="btn btn-danger w-100 mt-2"><i class="fas fa-check-circle"></i>
+                            Refuser l'intervention</button>
                     </div>
                 </div>
             </div>
         </div>
+        <x-confirmation-modal id="refusedReportModal" title="Ne pas attribuer l'intervention"
+            message="Voulez-vous vraiment refuser cette intervention ?" route="{{ route('report.refused', $slug) }}"
+            method="POST" />
 
         <!-- CARROUSEL DES IMAGES -->
         @if ($report->photo)

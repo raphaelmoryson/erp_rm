@@ -9,7 +9,6 @@ class Tenant extends Model
 {
     use HasFactory;
 
-    // Définir les champs mass assignables
     protected $fillable = [
         'lastName',
         'firstName',

@@ -19,7 +19,11 @@ class ReportController extends Controller
     public function store(Request $request)
     {
         $photo = $request->file('photo');
-        $photoPath = $photo->store('reports', 'public');
+        if ($photo) {
+            $photoPath = $photo->store('reports', 'public');
+        } else {
+            $photoPath = null;
+        }
 
         $random = Str::random(25);
 
@@ -54,7 +58,7 @@ class ReportController extends Controller
     {
         $report = Report::where('linkUrl', $slug)->with('property', 'unit', 'company')->first();
         if ($report) {
-            return view('page.report.report', ['report' => $report]);
+            return view('page.report.report', ['report' => $report, 'slug' => $slug]);
         } else {
             return abort(404);
         }
@@ -62,37 +66,59 @@ class ReportController extends Controller
     }
 
 
-    public function post(Request $request, $slug)
+    public function post_accepted(Request $request, $slug)
     {
         $file = $request->file('fileQuote');
         $path = $file->store('reports_file', 'public');
-    
+
         $report = Report::where('linkUrl', $slug)->firstOrFail();
         $report->update([
             'linkUrl' => null,
             'status' => 'in_progress',
         ]);
-    
-        // Création de la ligne d'historique avec message d'acceptation
+
         ReportLine::create([
             'report_id' => $report->id,
             'type' => 'progress',
             'detail' => "Acceptation de l'intervention par l'entreprise {$report->company->name} et devis déposé.",
         ]);
-    
+
         ReportLine::create([
             'report_id' => $report->id,
             'type' => 'document',
             'file_path' => $path,
         ]);
-    
-        return redirect("/")->with('success', 'Intervention acceptée et devis déposé.');
     }
 
+    public function post_refused(Request $request, $slug)
+    {
+        $report = Report::where('linkUrl', $slug)->firstOrFail();
+        $report->update([
+            'linkUrl' => null,
+            'status' => 'refused',
+        ]);
+
+        ReportLine::create([
+            'report_id' => $report->id,
+            'type' => 'progress',
+            'detail' => "L'entreprise a réfusé l'intervention.",
+        ]);
+
+    }
     public function show($id)
     {
-        $report = Report::with('company', 'property', 'unit','reportLines')->findOrFail($id);
+        $report = Report::with('company', 'property', 'unit', 'reportLines')->findOrFail($id); 
         return view('page.report.show', compact('report'));
         // return $report;
+    }
+
+    public function toggleStatus($id)
+    {
+        $report = Report::findOrFail($id);
+
+        $report->status = $report->status == 'in_progress' ? 'refused' : 'in_progress';
+        $report->save();
+
+        return redirect()->back()->with('success', 'Statut mis à jour avec succès.');
     }
 }

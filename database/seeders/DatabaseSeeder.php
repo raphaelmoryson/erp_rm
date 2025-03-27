@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
 use App\Models\Invoice;
 use App\Models\InvoiceLine;
 use App\Models\Lease;
@@ -61,6 +62,16 @@ class DatabaseSeeder extends Seeder
                 Tenant::factory(2)->create();
             });
         });
+
+        $company = Company::create([
+            'email' => 'raphael.moryson@gmail.com',
+            'phone' => '07 67 36 66 27',
+            'address' => '1 chemin du moulin',
+            'city' => 'Genève',
+            'zip_code' => '1204',
+            'siren' => '123456789',
+        ]);
+
 
         // $invoiceId = Invoice::create([
         //     'tenant_id' => 1,

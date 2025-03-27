@@ -325,10 +325,10 @@
                         </thead>
                         <tbody>
                             @foreach ($payments as $payment)
-                                <tr
+                                <tr 
                                     class="
                                                                                                         @if ($payment->status == 'payé') table-success
-                                                                                                            @else table-danger @endif">
+                                                                                                            @else table-danger @endif" style="height: 25px">
                                     <td>
                                         <a href="/properties/show/{{ $building->id }}/units/{{ $payment->tenant->id }}/">
                                             {{ $payment->tenant->firstName }} {{ $payment->tenant->lastName }}
@@ -345,14 +345,14 @@
                                             <form action="{{ route('payments.markAsPaid', $payment->id) }}"
                                                 method="POST">
                                                 @csrf
-                                                <button type="submit" class="btn btn-success btn-sm">Marquer comme
+                                                <button type="submit" class="btn btn-success btn-sm p-0 ps-2 pe-2">Marquer comme
                                                     payé</button>
                                             </form>
                                         @else
                                             <span class="text-muted">✔ Déjà payé</span>
                                         @endif
                                     </td>
-                                    <td><a class="btn btn-primary"
+                                    <td><a class="btn btn-primary p-0 ps-2 pe-2"
                                             href="{{ route('invoice.pdf', $payment->invoice_id) }}">Voir</a></td>
 
                                 </tr>
@@ -390,19 +390,16 @@
                             </select>
                         </div>
 
-                        <!-- Détails du problème -->
                         <div class="mb-3">
                             <label for="description" class="form-label">Détails du problème</label>
                             <textarea class="form-control" name="description" rows="3" required></textarea>
                         </div>
 
-                        <!-- Photo -->
                         <div class="mb-3">
                             <label for="photo" class="form-label">Photo (optionnel)</label>
                             <input type="file" class="form-control" name="photo">
                         </div>
 
-                        <!-- Bouton Soumettre -->
                         <button type="submit" class="btn btn-primary w-100">Signaler le problème</button>
                     </form>
                 </div>
