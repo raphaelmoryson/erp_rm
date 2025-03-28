@@ -30,40 +30,65 @@ class DatabaseSeeder extends Seeder
         $owner = User::create([
             'name' => 'Propriétaire SA',
             'email' => 'owner@example.com',
-            'password' => Hash::make('password123'),
+            'password' => Hash::make('test'),
             'role' => 'admin',
         ]);
 
         $regie = User::create([
             'name' => 'Gestionnaire Immo',
             'email' => 'regie@example.com',
-            'password' => Hash::make('123'),
+            'password' => Hash::make('test'),
             'role' => 'user',
         ]);
 
         $technician = User::create([
             'name' => 'Jean Dupont',
             'email' => 'tech@example.com',
-            'password' => Hash::make('123'),
+            'password' => Hash::make('test'),
             'role' => 'user',
         ]);
 
         $tenant = User::create([
             'name' => 'Alice Locataire',
             'email' => 'admin@test.com',
-            'password' => Hash::make('123'),
+            'password' => Hash::make('test'),
             'role' => 'manager',
         ]);
 
 
-        Properties::factory(1)->create()->each(function ($property) {
-            $units = Unit::factory(5)->create(['property_id' => $property->id]);
-            $units->each(function ($unit) {
-                Tenant::factory(2)->create();
-            });
-        });
+        $properties = Properties::create([
+            'manager_id' => $tenant->id,
+            'name' => 'Propriété 1',
+            'address' => 'Rue du Grütli 2',
+            'city' => 'Genève',
+            'zip_code' => '1204',
+            'latitude' => 46.203455,
+            'max_units' => 10,
+            'longitude' => 6.141271,
+            'status' => 'actif',
+            'type' => 'locatif',
+        ]);
+
+        Unit::create([
+            'property_id' => $properties->id,
+            'tenant_id' => null,
+            'type' => 'appartement',
+            'area' => 45.00,
+            'status' => 'libre',
+            'initial_rent_price' => 500.00,
+            'floor' => '0',
+            'name' => 'Appartement 1',
+        ]);
+
+        // Properties::factory(1)->create()->each(function ($property) {
+        //     $units = Unit::factory(5)->create(['property_id' => $property->id]);
+        //     $units->each(function ($unit) {
+        //         Tenant::factory(2)->create();
+        //     });
+        // });
 
         $company = Company::create([
+            'name' => 'Entreprise A',
             'email' => 'raphael.moryson@gmail.com',
             'phone' => '07 67 36 66 27',
             'address' => '1 chemin du moulin',

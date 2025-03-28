@@ -39,7 +39,6 @@ class PaymentsCron extends Command
 
         foreach ($units as $unit) {
             try {
-                // Création de la facture
                 $invoice = Invoice::create([
                     'tenant_id' => $unit->tenant_id,
                     'unit_id' => $unit->id,
@@ -48,16 +47,14 @@ class PaymentsCron extends Command
                     'status' => 'en attente',
                 ]);
 
-                // Ajout de la ligne de facture
                 InvoiceLine::create([
                     'invoice_id' => $invoice->id,
-                    'description' => 'Loyer du mois de ' . Carbon::now()->translatedFormat('F Y'),
+                    'description' => 'Loyer pour le mois de ' . Carbon::now()->locale('fr')->translatedFormat('F Y'),
                     'quantity' => 1,
                     'unit_price' => $unit->initial_rent_price,
                     'total' => $unit->initial_rent_price,
                 ]);
 
-                // Création du paiement
                 Payment::create([
                     'invoice_id' => $invoice->id,
                     'tenant_id' => $unit->tenant_id,
@@ -66,14 +63,6 @@ class PaymentsCron extends Command
                     'amount' => $unit->initial_rent_price,
                     'status' => 'en attente',
                 ]);
-
-                $tenant = Tenant::find($unit->tenant_id);
-                if ($tenant && $tenant->email) {
-                    Mail::to($tenant->email)->send(new InvoiceMail($invoice));
-                    \Log::info("Facture envoyée à {$tenant->email}");
-                } else {
-                    \Log::warning("Aucun email trouvé pour le locataire ID: {$unit->tenant_id}");
-                }
 
                 \Log::info('Paiement et facture créés pour le locataire ID : ' . $unit->tenant_id);
             } catch (\Exception $e) {

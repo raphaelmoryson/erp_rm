@@ -89,12 +89,13 @@
                         'Nov', 'Déc'
                     ],
                     datasets: [{
-                        label: 'Revenus (€)',
+                        label: 'Revenus (CHF Suisses)',
                         data: table,
                         backgroundColor: 'rgba(0, 123, 255, 0.7)',
                         borderColor: 'rgba(0, 123, 255, 1)',
                         borderWidth: 1
                     }]
+
                 },
                 options: {
                     responsive: true,
