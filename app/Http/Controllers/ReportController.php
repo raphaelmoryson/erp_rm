@@ -6,14 +6,13 @@ use App\Models\Properties;
 use App\Models\ReportLine;
 use Illuminate\Http\Request;
 use App\Models\Report;
-use App\Models\Property;
 use App\Models\Unit;
-use File;
 use App\Models\Company;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RequestQuoteMail;
 use Illuminate\Support\Str;
+use TCPDF;
+use View;
 class ReportController extends Controller
 {
     public function store(Request $request)
@@ -35,6 +34,12 @@ class ReportController extends Controller
             'linkUrl' => $random,
             'photo' => $photoPath,
             'status' => 'pending',
+        ]);
+
+        ReportLine::create([
+            'report_id' => $report->id,
+            'type' => 'progress',
+            'detail' => "Problème signalé par {$report->unit->tenant->firstName} {$report->unit->tenant->lastName} à l'entreprise {$report->company->name}.",
         ]);
 
         $company = Company::findOrFail($request->company_id);
@@ -107,18 +112,65 @@ class ReportController extends Controller
     }
     public function show($id)
     {
-        $report = Report::with('company', 'property', 'unit', 'reportLines')->findOrFail($id); 
+        $report = Report::with('company', 'property', 'unit', 'reportLines')->findOrFail($id);
         return view('page.report.show', compact('report'));
         // return $report;
     }
 
-    public function toggleStatus($id)
+    public function toggleStatus($id, Request $request)
     {
         $report = Report::findOrFail($id);
 
-        $report->status = $report->status == 'in_progress' ? 'refused' : 'in_progress';
+        $report->status = $request->status;
         $report->save();
 
         return redirect()->back()->with('success', 'Statut mis à jour avec succès.');
     }
+
+    public function status($id, Request $request)
+    {
+        $report = Report::findOrFail($id);
+
+        $report->status = $request->status;
+        $report->save();
+
+        return redirect()->back()->with('success', 'Statut mis à jour avec succès.');
+    }
+
+    public function createWorkOrder($id)
+    {
+        ReportLine::create([
+            'report_id' => $id,
+            'type' => 'work_order',
+            'file_path' => url('/reports/' . $id . '/work-order'),
+            'detail' => "Bon de travaux créé en attente d'envoie.",
+        ]);
+
+        return redirect()->back()->with('success', 'Bon de travaux créé avec succès.');
+
+    }
+
+    public function workOrder($id, Request $request)
+    {
+        $report = Report::with('company', 'property', 'unit')->findOrFail($id);
+
+        $html = View::make('pdf.work_order', compact('report'))->render();
+
+        $pdf = new TCPDF();
+        $pdf->SetCreator('Laravel');
+        $pdf->SetAuthor($report->company->name);
+        $pdf->SetTitle('Bon de Travaux');
+        $pdf->SetMargins(10, 10, 10);
+        $pdf->AddPage();
+        $pdf->SetFont('helvetica', '', 10);
+
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        return response()->streamDownload(function () use ($pdf) {
+            $pdf->Output('bon_de_travaux.pdf', 'I');
+        }, 'bon_de_travaux.pdf');
+
+
+    }
+
 }

@@ -121,5 +121,14 @@ class DatabaseSeeder extends Seeder
         // ]);
 
 
+        Tenant::create([
+            'firstName' => 'Alice',
+            'lastName' => 'Dutest',
+            'email' => 'raphael.moryson@gmail.com',
+            'mobile' => '07 67 36 66 27',
+            'adress' => '1 chemin du moulin',
+            'status' => 'actif',
+        ]);
+
     }
 }

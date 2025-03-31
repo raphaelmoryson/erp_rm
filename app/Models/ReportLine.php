@@ -11,7 +11,7 @@ class ReportLine extends Model
 
     protected $fillable = [
         'report_id',
-        'type', // text, file, etc.
+        'type', // progress, document, etc.
         'detail', // Texte descriptif de l'avancement
         'file_path', // Chemin du fichier s'il y en a un
     ];

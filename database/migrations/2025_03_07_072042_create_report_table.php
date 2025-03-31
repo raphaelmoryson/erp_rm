@@ -22,7 +22,7 @@ return new class extends Migration {
         Schema::create('report_lines', function (Blueprint $table) {
             $table->id();
             $table->foreignId('report_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['progress', 'document'])->default('progress');
+            $table->enum('type', ['progress', 'document', 'work_order'])->default('progress');
             $table->text('detail')->nullable();
             $table->string('file_path')->nullable();
             $table->timestamps();

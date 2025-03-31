@@ -11,21 +11,21 @@ class TenantsController extends Controller
     public function index(Request $request)
     {
         $query = Tenant::with("unit");
-    
+
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('firstName', 'LIKE', "%$search%")
-                  ->orWhere('lastName', 'LIKE', "%$search%")
-                  ->orWhere('email', 'LIKE', "%$search%");
+                    ->orWhere('lastName', 'LIKE', "%$search%")
+                    ->orWhere('email', 'LIKE', "%$search%");
             });
         }
-    
+
         $tenants = $query->paginate(10)->appends(['search' => $request->search]);
-    
+
         return view('page.tenants.view', compact('tenants'));
     }
-    
+
 
     public function create()
     {

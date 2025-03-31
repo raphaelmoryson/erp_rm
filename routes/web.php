@@ -66,6 +66,9 @@ Route::group(['middleware' => ['auth']], function () {
     // REPORT
     Route::post('/report/store', [ReportController::class, 'store'])->name('report.store');
     Route::post('/reports/{id}/toggle', [ReportController::class, 'toggleStatus'])->name('reports.toggle');
+    Route::get('/reports/{id}/work-order', [ReportController::class, 'workOrder'])->name('reports.workOrder');
+    Route::get('/reports/{id}/create-work-order', [ReportController::class, 'createWorkOrder'])->name('reports.createWorkOrder');
+    Route::post('/reports/{id}/status', [ReportController::class, 'status'])->name('reports.status');
     Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
 
 
