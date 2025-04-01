@@ -15,7 +15,8 @@ return new class extends Migration {
             $table->text('description');
             $table->string('photo')->nullable();
             $table->string('linkUrl')->nullable();
-            $table->enum('status', ['pending', 'in_progress', 'completed', 'refused', 'abandoned'])->default('pending');
+            $table->enum('status', ['wa', 'pending', 'in_progress', 'completed', 'refused', 'abandoned'])->default('pending');
+            $table->boolean('work_order')->default(false);
             $table->timestamps();
         });
 

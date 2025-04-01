@@ -66,10 +66,13 @@ Route::group(['middleware' => ['auth']], function () {
     // REPORT
     Route::post('/report/store', [ReportController::class, 'store'])->name('report.store');
     Route::post('/reports/{id}/toggle', [ReportController::class, 'toggleStatus'])->name('reports.toggle');
-    Route::get('/reports/{id}/work-order', [ReportController::class, 'workOrder'])->name('reports.workOrder');
-    Route::get('/reports/{id}/create-work-order', [ReportController::class, 'createWorkOrder'])->name('reports.createWorkOrder');
     Route::post('/reports/{id}/status', [ReportController::class, 'status'])->name('reports.status');
     Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
+
+    Route::get('/reports/{id}/work-order', [ReportController::class, 'workOrder'])->name('reports.workOrder');
+    Route::get('/reports/{id}/create-work-order', [ReportController::class, 'createWorkOrder'])->name('reports.createWorkOrder');
+    Route::post('/reports/{id}/store-work-order', [ReportController::class, 'storeWorkOrder'])->name('reports.storeWorkOrder');
+    Route::get('/reports/{id}/send-work-order', [ReportController::class, 'sendWorkOrder'])->name('reports.sendWorkOrder');
 
 
     // INVOICE
@@ -83,7 +86,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/inventory/pdf/{id}', [InventoryController::class, 'generatePDF'])->name('inventory.pdf');
 
     Route::get('/facture-qr', [QrBillController::class, 'generateQrBill']);
-    
+    Route::get('/logout', [LoginController::class, 'logout']);
+
 });
 Route::get('/report/{slug}', [ReportController::class, 'report_postfile'])->name('report.post_file');
 Route::post('/report/{slug}/accepted', [ReportController::class, 'post_accepted'])->name('report.accepted');
@@ -91,7 +95,6 @@ Route::post('/report/{slug}/refused', [ReportController::class, 'post_refused'])
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
-Route::get('/logout', [LoginController::class, 'logout']);
 
 Route::get('/support/{slug}', [SupportController::class, 'create'])->name('support.create');
 Route::post('/support/{slug}/send', [SupportController::class, 'send'])->name('support.send');

@@ -7,7 +7,7 @@
 
     <div class="container-fluid mt-4">
         <a href="{{ route('properties.show', $report->property_id) }}" class="btn btn-primary mb-2">Retour</a>
-        @if ($report->status == 'pending')
+        @if ($report->status == 'wa')
             <form action="{{ route('reports.status', $report->id) }}" method="POST" class="d-inline">
                 @csrf
                 @method('POST')
@@ -17,7 +17,15 @@
         @endif
 
         @if ($report->status == 'in_progress')
-            <a href="{{ route('reports.createWorkOrder', $report->id) }}" class="btn btn-info mb-2">Crée un bons de travail</a>
+            @if ($work_orders == false)
+                <a href="{{ route('reports.createWorkOrder', $report->id) }}" class="btn btn-info mb-2">Crée un bons de
+                    travail</a>
+            @endif
+            @if ($work_orders == true && $report->work_order == false)
+                <a href="{{ route('reports.sendWorkOrder', $report->id) }}" class="btn btn-info mb-2">Envoyer le bon a
+                    l'entreprise</a>
+            @endif
+
         @endif
 
         <span
@@ -26,6 +34,7 @@
         @elseif ($report->status == 'completed') bg-success 
         @elseif ($report->status == 'pending') bg-secondary 
         @elseif ($report->status == 'refused') bg-danger 
+        @elseif ($report->status == 'wa') bg-info 
         @else bg-danger @endif">
             @if ($report->status == 'in_progress')
                 En cours
@@ -35,6 +44,8 @@
                 En attente
             @elseif ($report->status == 'refused')
                 Refusée
+            @elseif ($report->status == 'wa')
+                En attente d'acceptation
             @else
                 Annulée
             @endif
@@ -75,12 +86,12 @@
             <div class="card-body">
                 <h4>Évolution de l'intervention</h4>
                 <ul class="timeline">
-                    @foreach ($report->reportLines as $line)
+                    @foreach ($report->reportLines->reverse() as $line)
                         <li class="timeline-item">
                             <span class="timeline-date d-block">{{ $line->created_at->format('d/m/Y H:i') }}</span>
                             <div
                                 class="timeline-content {{ $line->type == 'document' ? 'bg-light' : 'bg-white' }} d-flex flex-row ">
-                                <div >
+                                <div>
                                     <p>{{ $line->detail }}</p>
 
                                     @if ($line->type == 'document' && $line->file_path)
@@ -89,7 +100,7 @@
                                             Voir le fichier
                                         </a>
                                     @elseif ($line->type == 'work_order' && $line->file_path)
-                                        <a href="{{$line->file_path}}" target="_blank"
+                                        <a href="{{ $line->file_path }}" target="_blank"
                                             class="btn btn-sm btn-warning mt-2">
                                             Voir le bon de travail
                                         </a>

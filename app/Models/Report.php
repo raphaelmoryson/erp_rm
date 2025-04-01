@@ -14,6 +14,7 @@ class Report extends Model
         'unit_id',
         'company_id',
         'description',
+        'work_order',
         'linkUrl',
         'photo',
         'status',
@@ -34,6 +35,10 @@ class Report extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function workOrders()
+    {
+        return $this->hasMany(WorkOrder::class, 'report_id', 'id'); // Correction ici
+    }
     public function reportLines()
     {
         return $this->hasMany(ReportLine::class, 'report_id', 'id'); // Correction ici
