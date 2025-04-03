@@ -187,7 +187,7 @@
             <div id="tab2" class="tab-pane fade">
                 <div class="container-fluid p-0 m-0 d-flex">
                     <!-- COLONNE GAUCHE : GESTION DES DOSSIERS -->
-                    <div class="col-md-6">
+                    <div class="col-md-12">
 
                         <!-- FORMULAIRE DE CRÉATION DE DOSSIER -->
                         <form method="POST" action="{{ route('technical_folders.store', $building->id) }}"
