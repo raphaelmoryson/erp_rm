@@ -1,4 +1,4 @@
-@extends('base.bg')
+@extends('Base.bg')
 
 @section('content')
     <div class="row justify-content-center align-items-center h-100 position-relative z-2 bg-imglogin">

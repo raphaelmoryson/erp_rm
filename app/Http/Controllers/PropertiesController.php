@@ -30,14 +30,14 @@ class PropertiesController extends Controller
 
         $properties = $query->paginate(10)->appends(['search' => $request->search]);
 
-        return view('page.properties.properties', compact('properties'));
+        return view('Page.Properties.properties', compact('properties'));
     }
 
 
     public function create()
     {
         $user = User::all()->where('role', 'manager');
-        return view('page.properties.create-properties', ['managers' => $user]);
+        return view('Page.Properties.create-properties', ['managers' => $user]);
     }
 
     public function create_post(Request $request)
