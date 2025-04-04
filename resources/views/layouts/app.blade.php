@@ -8,10 +8,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" defer></script>
-    @livewireStyles
 </head>
 
 <body style="display: flex; flex-direction: row; height: 100vh; margin: 0;">
@@ -26,6 +25,8 @@
         @yield('content')
     </div>
 
+    <!-- Livewire Scripts -->
+    @livewireScripts
 </body>
 
 </html>

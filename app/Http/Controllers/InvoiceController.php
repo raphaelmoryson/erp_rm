@@ -35,7 +35,7 @@ class InvoiceController extends Controller
 
         $invoices = $query->paginate(10)->appends(['search' => $request->search]);
 
-        return view('page.invoice.show', compact('invoices'));
+        return view('Page.Invoice.show', compact('invoices'));
     }
 
     public function showPdf($id)
@@ -52,7 +52,7 @@ class InvoiceController extends Controller
         $pdf->AddPage();
         $pdf->SetFont('helvetica', '', 12);
 
-        $html = view('page.invoice.pdf', ['invoice' => $invoice])->render();
+        $html = view('Page.Invoice.pdf', ['invoice' => $invoice])->render();
         $pdf->writeHTML($html, true, false, true, false, '');
 
         $qrBill = QrBill::create();

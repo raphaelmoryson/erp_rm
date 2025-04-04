@@ -11,6 +11,6 @@ class CompanyController extends Controller
         
         // Company::factory(10)->create();
         $company = Company::all();
-        return view('page.company.index', ['companies'=> $company]);
+        return view('Page.Company.index', ['companies'=> $company]);
     }
 }

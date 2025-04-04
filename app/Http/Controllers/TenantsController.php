@@ -23,13 +23,13 @@ class TenantsController extends Controller
 
         $tenants = $query->paginate(10)->appends(['search' => $request->search]);
 
-        return view('page.tenants.view', compact('tenants'));
+        return view('Page.Tenants.view', compact('tenants'));
     }
 
 
     public function create()
     {
-        return view('page.tenants.create-tenants');
+        return view('Page.Tenants.create-tenants');
     }
 
     public function store(Request $request)
@@ -51,7 +51,7 @@ class TenantsController extends Controller
     public function edit($id)
     {
         $tenant = Tenant::findOrFail($id);
-        return view('page.tenants.edit-tenants', ['tenant' => $tenant]);
+        return view('Page.Tenants.edit-tenants', ['tenant' => $tenant]);
     }
     public function update(Request $request, Tenant $tenant)
     {
@@ -66,7 +66,7 @@ class TenantsController extends Controller
 
         $tenant->update($request->all());
 
-        return redirect()->route('tenants.index')->with('success', 'Locataire mis à jour avec succès !');
+        return redirect('/tenants')->with('success', 'Locataire mis à jour avec succès !');
     }
 
 }
