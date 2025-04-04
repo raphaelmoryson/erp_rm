@@ -64,7 +64,7 @@ class ReportController extends Controller
     {
         $report = Report::where('linkUrl', $slug)->with('property', 'unit', 'company')->first();
         if ($report) {
-            return view('page.report.report', ['report' => $report, 'slug' => $slug]);
+            return view('Page.report.report', ['report' => $report, 'slug' => $slug]);
         } else {
             return abort(404);
         }
@@ -120,7 +120,7 @@ class ReportController extends Controller
                 break;
             }
         }
-        return view('page.report.show', compact('report', 'work_orders'));
+        return view('Page.report.show', compact('report', 'work_orders'));
     }
 
     public function toggleStatus($id, Request $request)
@@ -152,7 +152,7 @@ class ReportController extends Controller
         if ($report->work_order == true) {
             return redirect()->back()->with('error', 'Le bon de travaux a déjà été envoyé.');
         }
-        return view('page.report.work-order', compact('id'));
+        return view('Page.Report.work-order', compact('id'));
     }
 
     public function storeWorkOrder(Request $request, $id)

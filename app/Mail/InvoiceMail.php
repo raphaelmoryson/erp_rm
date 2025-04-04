@@ -66,7 +66,7 @@ class InvoiceMail extends Mailable
         $pdf->SetFont('helvetica', '', 12);
         
         // Générer le HTML pour le PDF
-        $html = View::make('page.invoice.pdf', ['invoice' => $invoice])->render();
+        $html = View::make('Page.Invoice.pdf', ['invoice' => $invoice])->render();
         $pdf->writeHTML($html, true, false, true, false, '');
         
         return $pdf->Output('', 'S');

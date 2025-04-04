@@ -93,7 +93,7 @@ class PropertiesController extends Controller
         $payments = Payment::whereIn('unit_id', $unitIds)->with('tenant', 'unit')->orderBy('due_date')->get();
 
         $reports = Report::where('property_id', $id)->with('unit', 'company')->latest()->get();
-        return view('page.properties.edit-properties', compact(
+        return view('Page.Properties.edit-properties', compact(
             'companies',
             'units',
             'building',
@@ -108,7 +108,7 @@ class PropertiesController extends Controller
     {
         $building = Properties::where("id", $id)->first();
         $tenants = Tenant::all();
-        return view('page.properties.units.add', ['building' => $building, 'tenants' => $tenants]);
+        return view('Page.Properties.units.add', ['building' => $building, 'tenants' => $tenants]);
     }
 
     public function tenants_post(Request $request, int $id)
@@ -186,7 +186,7 @@ class PropertiesController extends Controller
 
         $unitsList = Unit::where('property_id', $properties)->get();
 
-        return view('page.properties.units.show', [
+        return view('Page.Properties.units.show', [
             "units" => $units,
             'tenants' => $tenants,
             'allPayment' => $allPayment,

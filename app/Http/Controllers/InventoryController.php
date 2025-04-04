@@ -32,7 +32,7 @@ class InventoryController extends Controller
     {
         $inventory = Inventory::with('unit.tenant', 'elements')->findOrFail($id);
 
-        $html = view('page.inventory.pdf', compact('inventory'))->render();
+        $html = view('Page.Inventory.pdf', compact('inventory'))->render();
 
         $pdf = new TCPDF();
 
