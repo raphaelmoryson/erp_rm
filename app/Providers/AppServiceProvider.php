@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\View\Components\ConfirmationModal;
+use Blade;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Blade::component('confirmation-modal', ConfirmationModal::class);
         Paginator::useBootstrap();
     }
 }

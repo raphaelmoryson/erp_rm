@@ -102,7 +102,6 @@
                 message="Voulez-vous vraiment désattribuer ce locataire ?"
                 route="{{ route('unit.remove_tenant', $units->id) }}" method="POST" />
 
-
             <div class="tab-pane fade " id="compta" role="tabpanel" aria-labelledby="compta-tab">
                 <div class="container-fluid p-0 m-0" style="overflow-x: hidden">
                     <h3>Tous les loyers</h3>
@@ -147,7 +146,8 @@
                             <label for="unit_id" class="form-label">Appartement</label>
                             <select name="unit_id" id="unit_id" class="form-select" required>
                                 @foreach ($unitsList as $unit)
-                                    <option value="{{ $unit->id }}" @if($units->id == $unit->id) selected @endif>{{ $unit->name }}</option>
+                                    <option value="{{ $unit->id }}" @if($units->id == $unit->id) selected @endif>{{ $unit->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -198,16 +198,16 @@
                             let newElement = document.createElement("div");
                             newElement.classList.add("element", "row", "g-2", "mt-2");
                             newElement.innerHTML = `
-                        <div class="col-md-4">
-                            <input type="text" name="elements[${index}][name]" class="form-control" placeholder="Élément (Ex: Murs)">
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" name="elements[${index}][etat]" class="form-control" placeholder="État (Ex: Bon)">
-                        </div>
-                        <div class="col-md-4">
-                            <input type="file" name="elements[${index}][photo]" class="form-control">
-                        </div>
-                    `;
+                            <div class="col-md-4">
+                                <input type="text" name="elements[${index}][name]" class="form-control" placeholder="Élément (Ex: Murs)">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="elements[${index}][etat]" class="form-control" placeholder="État (Ex: Bon)">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="file" name="elements[${index}][photo]" class="form-control">
+                            </div>
+                        `;
                             elementsDiv.appendChild(newElement);
                             index++;
                         }
