@@ -14,7 +14,7 @@
         </ul>
         <div class="tab-content">
             <div id="tab1" class="tab-pane fade show active">
-                <div class=".container-fluid p-0 m-0" style="overflow-x: hidden">
+                <div class="container-fluid p-0 m-0" style="overflow-x: hidden">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="card">
@@ -103,8 +103,7 @@
                                                             @endif
                                                             <td class="d-flex align-items-center">
                                                                 <button type="button" class="btn btn-danger p-1"
-                                                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                                                    onclick="document.getElementById('exampleModal').setAttribute('data-unit-id', '{{ $unit->id }}')">
+                                                                    data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                                     Supprimer
                                                                 </button>
 
@@ -121,8 +120,9 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                aria-hidden="true" data-unit-id="">
+                                aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -135,8 +135,8 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
-                                            <form action="{{ route('properties.units_delete', $unit->id ?? '') }}"
-                                                method="POST">
+                                                data-bs-dismiss="modal">Fermer</button>
+                                            <form action="{{ route('properties.units_delete', $unit->id) }}"
                                                 method="POST">
                                                 @csrf
                                                 @method('POST')
