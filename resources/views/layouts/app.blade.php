@@ -14,7 +14,7 @@
 </head>
 
 <body style="display: flex; flex-direction: row; height: 100vh; margin: 0;">
-    @include('components.Navbar')
+    <x-navbar />
     <div class="app" style="margin:@yield('marge', 30)px">
         <div class="d-flex justify-content-between align-items-center">
             <h1>@yield('title', 'Document')</h1>
