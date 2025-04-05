@@ -71,14 +71,14 @@
                         <p class="mb-1"><strong>Ville :</strong> {{ $company->city }}</p>
                         <p class="mb-2"><strong>SIREN :</strong> {{ $company->siren }}</p>
                         <div class="d-flex gap-2">
-                            <a href="{{ route('company.show', $company->id) }}" class="btn btn-sm btn-info flex-fill">Voir</a>
+                            {{-- <a href="{{ route('company.show', $company->id) }}" class="btn btn-sm btn-info flex-fill">Voir</a>
                             <a href="{{ route('company.edit', $company->id) }}" class="btn btn-sm btn-warning flex-fill">Modifier</a>
                             <form action="{{ route('company.destroy', $company->id) }}" method="POST" class="flex-fill">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger w-100"
                                     onclick="return confirm('Voulez-vous vraiment supprimer cette entreprise ?')">Supprimer</button>
-                            </form>
+                            </form> --}}
                         </div>
                     </div>
                 </div>
