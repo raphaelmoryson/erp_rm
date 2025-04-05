@@ -103,7 +103,8 @@
                                                             @endif
                                                             <td class="d-flex align-items-center">
                                                                 <button type="button" class="btn btn-danger p-1"
-                                                                    data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                                    onclick="document.getElementById('exampleModal').setAttribute('data-unit-id', '{{ $unit->id }}')">
                                                                     Supprimer
                                                                 </button>
 
@@ -120,9 +121,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                aria-hidden="true">
+                                aria-hidden="true" data-unit-id="">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -135,8 +135,8 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Fermer</button>
-                                            <form action="{{ route('properties.units_delete', $unit->id) }}"
+                                            <form action="{{ route('properties.units_delete', $unit->id ?? '') }}"
+                                                method="POST">
                                                 method="POST">
                                                 @csrf
                                                 @method('POST')
