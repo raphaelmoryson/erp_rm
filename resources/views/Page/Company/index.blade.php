@@ -44,14 +44,14 @@
                             <td>{{ $company->siren }}</td>
                             <td>
                                 {{-- Actions pour chaque entreprise --}}
-                                <a href="{{ route('company.show', $company->id) }}" class="btn btn-info btn-sm">Voir</a>
-                                <a href="{{ route('company.edit', $company->id) }}" class="btn btn-warning btn-sm">Modifier</a>
+                                <a href="{{ route('company', $company->id) }}" class="btn btn-info btn-sm">Voir</a>
+                                {{-- <a href="{{ route('company.edit', $company->id) }}" class="btn btn-warning btn-sm">Modifier</a>
                                 <form action="{{ route('company.destroy', $company->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm"
                                         onclick="return confirm('Voulez-vous vraiment supprimer cette entreprise ?')">Supprimer</button>
-                                </form>
+                                </form> --}}
                             </td>
                         </tr>
                     @endforeach
