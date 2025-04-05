@@ -4,34 +4,34 @@
 
 @section('content')
     <div class="container-fluid mt-4">
-        <div class="row">
-            <!-- Cartes de résumé -->
-            <div class="col-md-3">
-                <div class="card shadow-sm bg-primary text-white">
+        <!-- Cartes résumé -->
+        <div class="row g-3">
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card shadow-sm bg-primary text-white h-100">
                     <div class="card-body">
                         <h5 class="card-title">Biens Immobiliers</h5>
                         <h3>{{ $numberProperties }}</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card shadow-sm bg-success text-white">
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card shadow-sm bg-success text-white h-100">
                     <div class="card-body">
                         <h5 class="card-title">Locataires</h5>
                         <h3>{{ $numberTenants }}</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card shadow-sm bg-warning text-dark">
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card shadow-sm bg-warning text-dark h-100">
                     <div class="card-body">
                         <h5 class="card-title">Interventions</h5>
                         <h3>{{ $numberInterventions }}</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card shadow-sm bg-danger text-white">
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card shadow-sm bg-danger text-white h-100">
                     <div class="card-body">
                         <h5 class="card-title">Devis en attente</h5>
                         <h3>{{ $numberQuotes }}</h3>
@@ -40,19 +40,19 @@
             </div>
         </div>
 
-        <!-- Activités récentes -->
-        <div class="row mt-4">
-            <div class="col-md-8">
-                <div class="card shadow-sm">
+        <!-- Activités récentes + graphique -->
+        <div class="row mt-4 g-3">
+            <div class="col-12 col-lg-8">
+                <div class="card shadow-sm h-100">
                     <div class="card-header bg-secondary text-white">
                         Dernières Activités
                     </div>
-                    <div class="card-body">
-                        <ul class="list-group">
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
                             @forelse ($latestActivities as $activity)
-                                <li class="list-group-item">
-                                    {{ $activity->detail }} - <small
-                                        class="text-muted">{{ $activity->created_at->diffForHumans() }}</small>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{ $activity->detail }}
+                                    <small class="text-muted">{{ $activity->created_at->diffForHumans() }}</small>
                                 </li>
                             @empty
                                 <li class="list-group-item text-muted">Aucune activité récente.</li>
@@ -62,20 +62,20 @@
                 </div>
             </div>
 
-
-            <div class="col-md-4">
-                <div class="card shadow-sm">
+            <div class="col-12 col-lg-4">
+                <div class="card shadow-sm h-100">
                     <div class="card-header bg-info text-white">
                         Revenus Locatifs
                     </div>
                     <div class="card-body">
-                        <canvas id="revenueChart"></canvas>
+                        <canvas id="revenueChart" style="width: 100%; height: auto;"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    {{-- Chart.js --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -85,20 +85,18 @@
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct',
-                        'Nov', 'Déc'
-                    ],
+                    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'],
                     datasets: [{
-                        label: 'Revenus (CHF Suisses)',
+                        label: 'Revenus (CHF)',
                         data: table,
                         backgroundColor: 'rgba(0, 123, 255, 0.7)',
                         borderColor: 'rgba(0, 123, 255, 1)',
                         borderWidth: 1
                     }]
-
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             beginAtZero: true
@@ -108,5 +106,4 @@
             });
         });
     </script>
-
 @endsection

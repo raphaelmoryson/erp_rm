@@ -50,21 +50,29 @@ body {
 }
 
 .bg-imglogin {
-    background-image: url('/public/images/backloginpage.jpg') !important;
+    background-image: url('/public/images/backloginpage.jpg'); /* change si nécessaire */
     background-size: cover;
-    padding-top: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
 }
 
-.btn-login {
-    background-color: #02A2EB;
-    border-radius: 15px;
-    height: 60px;
-    font-size: 24.98px;
-    &:hover {
-        background-color: #02A2EB;
 
-    }
+/* Met ton contenu au-dessus de l’image + filtre */
+.bg-imglogin > .text-light {
+    position: relative;
+    z-index: 2;
 }
+
+
+
 
 // TIMELINE
 

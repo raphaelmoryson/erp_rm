@@ -18,7 +18,7 @@
         <div class="col-md-12">
             <table class="table table-striped table-hover">
                 <thead class="table-immoFlow">
-                    <tr> 
+                    <tr>
                         <th scope="col">#</th>
                         <th scope="col">Libellé</th>
                         <th scope="col">Nom Prénom</th>
@@ -35,7 +35,8 @@
                             <td>{{ $invoice->tenant->lastName }} {{ $invoice->tenant->firstName }}</td>
                             <td>{{ $invoice->amount }}€</td>
                             <td>
-                                <a href="{{ route('properties.show_units', ['properties' => $invoice->unit->property_id, 'id' => $invoice->unit->id]) }}">
+                                <a
+                                    href="{{ route('properties.show_units', ['properties' => $invoice->unit->property_id, 'id' => $invoice->unit->id]) }}">
                                     {{ $invoice->unit->name }}
                                 </a>
                             </td>

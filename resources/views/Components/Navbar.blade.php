@@ -13,7 +13,7 @@
         <div class="sidebar ">
             <div class="d-flex">
                 <div class="logoName">
-                    <img style="width: 110px; height: 75px;" src="/images/logo.png" alt="">
+                    <img src="/images/logo.png" alt="">
 
                 </div>
             </div>
@@ -75,6 +75,13 @@
 
         toggleButton.addEventListener('click', () => {
             sidebar.classList.toggle('collapsed');
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (isCollapsed) {
+            sidebar.classList.add('collapsed');
+            }
         });
     </script>
 </body>

@@ -24,6 +24,11 @@
     align-items: center;
     justify-content: center;
     font-size: 2em;
+    img {
+        width: 70px;
+        height: 30px;
+        margin-right: 10px;
+    }
 }
 
 .sidebar nav {
@@ -187,8 +192,7 @@
 }
 
 .sidebar.collapsed .logo {
-    font-size: 1em; /* Cache le texte du logo */
-    padding: 1rem;
+    width: 100%;
 }
 
 .sidebar.collapsed nav {
