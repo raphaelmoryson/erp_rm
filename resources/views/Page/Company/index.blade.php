@@ -85,9 +85,6 @@
             @endforeach
         </div>
 
-        {{-- Pagination --}}
-        <div class="d-flex justify-content-center mt-3">
-            {{ $companies->links() }}
-        </div>
+
     </div>
 @endsection
